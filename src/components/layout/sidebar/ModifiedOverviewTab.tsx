@@ -37,7 +37,7 @@ interface ModifiedOverviewTabProps {
 
 export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTaskClick }) => {
   return (
-    <div className="bg-[#E6F0EE] p-4 rounded-lg space-y-6">
+    <div className="bg-[#F2FCE2] p-4 rounded-lg space-y-6">
       {/* Medical History Section */}
       <section>
         <h3 className="font-medium text-gray-900 mb-4 flex items-center">

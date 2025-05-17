@@ -75,6 +75,10 @@ export default {
 					green: '#10b981',
 					purple: '#a855f7',
 					orange: '#f97316'
+				},
+				// Add custom color for sidebar background
+				hana: {
+					background: '#F2FCE2'
 				}
 			},
 			borderRadius: {
