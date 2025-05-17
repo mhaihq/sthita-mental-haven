@@ -18,7 +18,7 @@ export const PatientInfoCard: React.FC<PatientInfoCardProps> = ({
   medicalConditions
 }) => {
   return (
-    <div className="bg-[#F2FCE2] px-4 py-3 border-b border-gray-200">
+    <div className="bg-white px-4 py-3 border-b border-gray-200">
       {/* Patient Name and Age */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center">
