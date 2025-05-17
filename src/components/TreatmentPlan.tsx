@@ -39,8 +39,11 @@ const TreatmentPlan: React.FC<TreatmentPlanProps> = ({ patient }) => {
         <div className="flex justify-between items-center">
           <div>
             <CardTitle>Treatment Plan</CardTitle>
-            <CardDescription>Goals, interventions, and assessment results</CardDescription>
+            <CardDescription>Behavioral Health Integration (BHI)</CardDescription>
           </div>
+          <Badge className="bg-green-50 text-green-600 border border-green-200">
+            BHI G2214/99484
+          </Badge>
         </div>
       </CardHeader>
       <CardContent>

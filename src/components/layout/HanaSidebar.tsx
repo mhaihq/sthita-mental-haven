@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Brain, 
@@ -11,7 +12,13 @@ import {
   ClipboardList,
   X,
   CalendarDays,
-  BadgeAlert
+  BadgeAlert,
+  Clock,
+  AlertTriangle,
+  Check,
+  Activity,
+  CircleCheck,
+  FileText as FileTextIcon
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -20,10 +27,10 @@ import OverviewTab from '../overview/OverviewTab';
 import { Badge } from '@/components/ui/badge';
 import { patientData } from '@/data/patientData';
 import { Progress } from '@/components/ui/progress';
-import { Activity, CircleCheck, FileText as FileTextIcon } from 'lucide-react';
-import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Card, CardContent } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 
 // Calculate patient age based on date of birth
 const calculateAge = (dateOfBirth: string) => {
@@ -190,8 +197,119 @@ export const HanaSidebar = () => {
             {activeTab === 'overview' && <OverviewTabModified />}
             {activeTab === 'tasks' && (
               <div>
-                <h3 className="font-medium text-xl text-gray-900 mb-4">Care Tasks</h3>
-                <p className="text-gray-600">Care tasks content will be displayed here.</p>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-medium text-xl text-gray-900 flex items-center">
+                    <AlertTriangle className="mr-2 text-amber-500" size={20} />
+                    Care Tasks
+                  </h3>
+                  <Button variant="outline" size="sm" className="text-blue-600">
+                    View All
+                  </Button>
+                </div>
+                
+                <div className="bg-white rounded-lg mb-6 shadow-sm">
+                  <div className="p-4 border-b">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                          <Clock className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <h4 className="font-medium">CCM Progress</h4>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-medium">0/20 min</span>
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+                        <span className="flex items-center">
+                          <Check size={16} className="text-green-500 mr-1" />
+                          Requirements: Patient Consent
+                        </span>
+                        <span className="mx-2">•</span>
+                        <span className="flex items-center">
+                          <Check size={16} className="text-green-500 mr-1" />
+                          2+ Chronic Conditions
+                        </span>
+                      </div>
+                      <div className="flex justify-end text-sm text-blue-600">
+                        20 min needed
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Medication Task */}
+                <div className="bg-white rounded-lg p-5 mb-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-3 h-3 rounded-full bg-yellow-300"></div>
+                    <Badge className="bg-yellow-50 text-yellow-800 border border-yellow-200 hover:bg-yellow-100">
+                      Medication
+                    </Badge>
+                  </div>
+                  
+                  <h3 className="text-lg font-medium text-gray-900 mb-3">
+                    Missed Medications This Week (2 doses of Lisinopril)
+                  </h3>
+                  
+                  <div className="mb-4">
+                    <Badge className="bg-purple-50 text-purple-700 border-purple-200">
+                      AI Insight
+                    </Badge>
+                    <p className="text-gray-600 mt-2">
+                      Flagged by Adherence Agent — 11% drop in last 30 days
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-4">
+                    <Badge className="bg-blue-50 text-blue-600 border border-blue-200">
+                      99490
+                    </Badge>
+                    <div className="flex items-center text-gray-500">
+                      <Clock size={14} className="mr-1" />
+                      5 min
+                    </div>
+                    <Badge className="bg-green-50 text-green-600 border border-green-200">
+                      Billable
+                    </Badge>
+                  </div>
+                </div>
+                
+                {/* Mental Health Task */}
+                <div className="bg-white rounded-lg p-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-3 h-3 rounded-full bg-pink-300"></div>
+                    <Badge className="bg-pink-50 text-pink-800 border border-pink-200 hover:bg-pink-100">
+                      Mental-health
+                    </Badge>
+                  </div>
+                  
+                  <h3 className="text-lg font-medium text-gray-900 mb-3">
+                    PHQ-9 Score Increased from 8 to 13
+                  </h3>
+                  
+                  <div className="mb-4">
+                    <Badge className="bg-purple-50 text-purple-700 border-purple-200">
+                      AI Insight
+                    </Badge>
+                    <p className="text-gray-600 mt-2">
+                      Flagged by AI from Apr 3 call — mentions job stress
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-4">
+                    <Badge className="bg-blue-50 text-blue-600 border border-blue-200">
+                      99484
+                    </Badge>
+                    <div className="flex items-center text-gray-500">
+                      <Clock size={14} className="mr-1" />
+                      10 min
+                    </div>
+                    <Badge className="bg-green-50 text-green-600 border border-green-200">
+                      Billable
+                    </Badge>
+                  </div>
+                </div>
               </div>
             )}
             {activeTab === 'agents' && (
@@ -209,7 +327,84 @@ export const HanaSidebar = () => {
             {activeTab === 'billing' && (
               <div>
                 <h3 className="font-medium text-xl text-gray-900 mb-4">Billing</h3>
-                <p className="text-gray-600">Billing information will be displayed here.</p>
+                <Card className="mb-6">
+                  <CardContent className="p-4">
+                    <h4 className="font-medium mb-3">BHI Billing Codes</h4>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Code</TableHead>
+                          <TableHead>Description</TableHead>
+                          <TableHead>Time Used</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium">G2214</TableCell>
+                          <TableCell>Initial Assessment</TableCell>
+                          <TableCell>35/50 min</TableCell>
+                          <TableCell><Badge className="bg-green-100 text-green-700">Active</Badge></TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">99484</TableCell>
+                          <TableCell>General BHI Service</TableCell>
+                          <TableCell>12/20 min</TableCell>
+                          <TableCell><Badge className="bg-green-100 text-green-700">Active</Badge></TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">99492</TableCell>
+                          <TableCell>First Month CoCM</TableCell>
+                          <TableCell>0/70 min</TableCell>
+                          <TableCell><Badge className="bg-gray-100 text-gray-700">Not Started</Badge></TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <Card className="bg-white border-none shadow-sm">
+                    <CardContent className="p-4">
+                      <h4 className="font-medium text-gray-900">BHI G2214</h4>
+                      <p className="text-sm text-gray-600 mb-3">Initial Assessment</p>
+                      
+                      <div className="mb-2">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-gray-600">Time Used</span>
+                          <span className="text-gray-900 font-medium">35/50 min</span>
+                        </div>
+                        <Progress value={70} className="h-2 bg-gray-100" />
+                      </div>
+                      
+                      <div className="text-right">
+                        <span className="text-xs text-gray-500">
+                          15 minutes remaining
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-white border-none shadow-sm">
+                    <CardContent className="p-4">
+                      <h4 className="font-medium text-gray-900">BHI 99484</h4>
+                      <p className="text-sm text-gray-600 mb-3">Monthly Service</p>
+                      
+                      <div className="mb-2">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-gray-600">Time Used</span>
+                          <span className="text-gray-900 font-medium">12/20 min</span>
+                        </div>
+                        <Progress value={60} className="h-2 bg-gray-100" />
+                      </div>
+                      
+                      <div className="text-right">
+                        <span className="text-xs text-gray-500">
+                          8 minutes remaining
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             )}
           </div>
@@ -307,6 +502,7 @@ const OverviewTabModified = () => {
               <DrawerTrigger asChild>
                 <div 
                   className="border-l-4 border-l-[#1E4D36] pl-4 pr-2 py-2 bg-white rounded-md shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => setActiveTab('tasks')}
                 >
                   <div className="flex items-start justify-between mb-1">
                     <div>
@@ -340,7 +536,10 @@ const OverviewTabModified = () => {
                   </div>
                   <p className="text-sm text-gray-600">Due: <span className="font-medium">{task.dueDate}</span></p>
                   <DrawerClose asChild>
-                    <Button className="w-full mt-6 bg-[#1E4D36] hover:bg-[#2A6349]">
+                    <Button 
+                      className="w-full mt-6 bg-[#1E4D36] hover:bg-[#2A6349]"
+                      onClick={() => setActiveTab('tasks')}
+                    >
                       Go to Care Tasks
                     </Button>
                   </DrawerClose>
