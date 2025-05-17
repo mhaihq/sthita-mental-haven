@@ -25,12 +25,12 @@ export const HanaSidebar = () => {
     <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
       <SheetTrigger asChild>
         <button 
-          className="flex items-center justify-center w-10 h-10 bg-[#1E4D36] rounded-full shadow-lg hover:bg-[#2A6349] transition-colors pulse-animation fixed right-4 bottom-4 z-50"
-          aria-label="Open Hana sidebar"
+          className="flex items-center justify-center w-10 h-10 bg-[#1E4D36] rounded-full shadow-lg hover:bg-[#2A6349] transition-colors pulse-animation fixed right-4 top-20 z-50"
+          aria-label="Open sidebar"
         >
           <img 
             src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
-            alt="Hana Clinic Logo" 
+            alt="CareHealth Icon" 
             className="h-8 w-8 object-contain"
           />
         </button>
@@ -43,13 +43,8 @@ export const HanaSidebar = () => {
             <div className="absolute inset-0 backdrop-blur-md bg-white/70 z-0"></div>
             <div className="relative z-10 flex items-center justify-between p-6">
               <div className="flex items-center gap-3">
-                <img 
-                  src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
-                  alt="Hana Clinic Logo" 
-                  className="h-14 w-auto"
-                />
                 <div>
-                  <h2 className="text-2xl font-bold text-[#1E4D36]">Hana Compass</h2>
+                  <h2 className="text-2xl font-bold text-[#1E4D36]">CareHealth Compass</h2>
                   <p className="text-sm text-[#2A6349]">Patient Care Assistant</p>
                 </div>
               </div>
@@ -63,8 +58,8 @@ export const HanaSidebar = () => {
             </div>
           </div>
           
-          {/* Navigation Tabs - Adding better spacing and padding */}
-          <div className="flex overflow-x-auto p-4 gap-3 bg-white/50 backdrop-blur-sm border-b border-gray-200">
+          {/* Navigation Tabs - With sticky positioning */}
+          <div className="sticky top-0 z-10 flex overflow-x-auto p-4 gap-3 bg-white border-b border-gray-200">
             <Button 
               variant={activeTab === 'overview' ? 'default' : 'outline'} 
               size="sm"
@@ -112,6 +107,9 @@ export const HanaSidebar = () => {
             </Button>
           </div>
           
+          {/* Add white background to create space */}
+          <div className="bg-white h-4"></div>
+          
           {/* Tab Content */}
           <div className="flex-grow overflow-y-auto p-4">
             {activeTab === 'overview' && <OverviewTab />}
@@ -146,7 +144,7 @@ export const HanaSidebar = () => {
             <div className="absolute inset-0 backdrop-blur-md bg-white/70 z-0"></div>
             <div className="relative z-10 p-4 border-t border-gray-200">
               <p className="text-xs text-gray-500 text-center">
-                Hana Compass • Patient: Sthita Pujari • Last updated: 3 days ago
+                CareHealth Compass • Patient: Sthita Pujari • Last updated: 3 days ago
               </p>
             </div>
           </div>

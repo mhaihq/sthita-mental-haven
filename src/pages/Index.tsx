@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { patientData } from '@/data/patientData';
@@ -28,12 +27,7 @@ const Index = () => {
         <div className="container py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <img 
-                src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
-                alt="Hana Clinic Logo" 
-                className="h-10 w-auto"
-              />
-              <h1 className="text-2xl font-bold text-primary">Hana Compass</h1>
+              <h1 className="text-2xl font-bold text-primary">CareHealth EHR</h1>
             </div>
             {/* Patient and Population buttons removed */}
           </div>
