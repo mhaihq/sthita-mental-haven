@@ -1,12 +1,98 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { patientData } from '@/data/patientData';
+import PatientHeader from '@/components/PatientHeader';
+import MedicalHistory from '@/components/MedicalHistory';
+import TreatmentPlan from '@/components/TreatmentPlan';
+import ProviderNotes from '@/components/ProviderNotes';
+import ProviderAssignment from '@/components/ProviderAssignment';
+import { Brain, CalendarCheck, ClockAlert, Heart, MessageCircle } from 'lucide-react';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <header className="border-b bg-card">
+        <div className="container py-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-primary">Mental Health Clinic EHR</h1>
+          </div>
+        </div>
+      </header>
+      
+      <main className="container py-6">
+        <PatientHeader patient={patientData} />
+        
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="w-full justify-start mb-6 bg-transparent border-b rounded-none h-auto p-0 overflow-x-auto medical-scrollbar">
+            <TabsTrigger 
+              value="overview" 
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <Brain className="h-4 w-4" />
+              <span>Overview</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="sessions" 
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <MessageCircle className="h-4 w-4" />
+              <span>Session Notes</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="plan" 
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <CalendarCheck className="h-4 w-4" />
+              <span>Treatment Plan</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="history" 
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <Heart className="h-4 w-4" />
+              <span>Medical History</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="providers" 
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+            >
+              <ClockAlert className="h-4 w-4" />
+              <span>Care Team</span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="overview" className="fade-in">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <MedicalHistory patient={patientData} />
+              </div>
+              <div>
+                <TreatmentPlan patient={patientData} />
+              </div>
+            </div>
+            <div className="mt-6">
+              <ProviderNotes patient={patientData} />
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="sessions" className="fade-in">
+            <ProviderNotes patient={patientData} />
+          </TabsContent>
+          
+          <TabsContent value="plan" className="fade-in">
+            <TreatmentPlan patient={patientData} />
+          </TabsContent>
+          
+          <TabsContent value="history" className="fade-in">
+            <MedicalHistory patient={patientData} />
+          </TabsContent>
+          
+          <TabsContent value="providers" className="fade-in">
+            <ProviderAssignment />
+          </TabsContent>
+        </Tabs>
+      </main>
     </div>
   );
 };
