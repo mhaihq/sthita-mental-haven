@@ -47,35 +47,35 @@ const Index = () => {
           <TabsList className="w-full justify-start mb-6 bg-transparent border-b rounded-none h-auto p-0 overflow-x-auto medical-scrollbar">
             <TabsTrigger 
               value="overview" 
-              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary px-6 py-3"
             >
               <Brain className="h-4 w-4" />
               <span>Overview</span>
             </TabsTrigger>
             <TabsTrigger 
               value="sessions" 
-              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary px-6 py-3"
             >
               <MessageCircle className="h-4 w-4" />
               <span>Session Notes</span>
             </TabsTrigger>
             <TabsTrigger 
               value="plan" 
-              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary px-6 py-3"
             >
               <CalendarCheck className="h-4 w-4" />
               <span>Treatment Plan</span>
             </TabsTrigger>
             <TabsTrigger 
               value="history" 
-              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary px-6 py-3"
             >
               <Heart className="h-4 w-4" />
               <span>Medical History</span>
             </TabsTrigger>
             <TabsTrigger 
               value="providers" 
-              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary"
+              className="flex items-center gap-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary px-6 py-3"
             >
               <ClockAlert className="h-4 w-4" />
               <span>Care Team</span>
