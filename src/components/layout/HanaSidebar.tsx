@@ -64,7 +64,7 @@ export const HanaSidebar = () => {
           </div>
           
           {/* Navigation Tabs - Adding better spacing and padding */}
-          <div className="flex overflow-x-auto p-4 gap-3 bg-white/50 backdrop-blur-sm border-b border-gray-200">
+          <div className="flex overflow-x-auto p-4 gap-3 bg-white/50 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
             <Button 
               variant={activeTab === 'overview' ? 'default' : 'outline'} 
               size="sm"
@@ -112,8 +112,8 @@ export const HanaSidebar = () => {
             </Button>
           </div>
           
-          {/* Tab Content */}
-          <div className="flex-grow overflow-y-auto p-4">
+          {/* Tab Content - Fixed padding and spacing */}
+          <div className="flex-grow overflow-y-auto p-4 mt-4">
             {activeTab === 'overview' && <OverviewTab />}
             {activeTab === 'tasks' && (
               <div>
