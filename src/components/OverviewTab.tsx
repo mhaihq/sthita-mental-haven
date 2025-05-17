@@ -98,10 +98,10 @@ const OverviewTab = () => {
       <section>
         <h2 className="text-xl font-semibold mb-4">Priority Tasks</h2>
         <div className="space-y-3">
-          <Sheet>
-            <SheetTrigger asChild>
-              {priorityTasks.map((task) => (
-                <Card key={task.id} className="cursor-pointer hover:shadow-md transition-shadow">
+          {priorityTasks.map((task) => (
+            <Sheet key={task.id}>
+              <SheetTrigger asChild>
+                <Card className="cursor-pointer hover:shadow-md transition-shadow">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div>
@@ -119,23 +119,23 @@ const OverviewTab = () => {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </SheetTrigger>
-            <SheetContent width="66.666%" side="right" className="overflow-y-auto">
-              <div className="py-6">
-                <h2 className="text-2xl font-bold mb-4">Care Tasks</h2>
-                <div className="space-y-4">
-                  {/* Care tasks would be listed here */}
-                  <Card>
-                    <CardContent className="p-4">
-                      <h3>Patient Care Tasks</h3>
-                      <p>This section would show detailed care tasks and allow for management.</p>
-                    </CardContent>
-                  </Card>
+              </SheetTrigger>
+              <SheetContent width="66.666%" side="right" className="overflow-y-auto">
+                <div className="py-6">
+                  <h2 className="text-2xl font-bold mb-4">Care Tasks</h2>
+                  <div className="space-y-4">
+                    {/* Care tasks would be listed here */}
+                    <Card>
+                      <CardContent className="p-4">
+                        <h3>Patient Care Tasks</h3>
+                        <p>This section would show detailed care tasks and allow for management.</p>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetContent>
+            </Sheet>
+          ))}
         </div>
       </section>
 
