@@ -7,9 +7,13 @@ import MedicalHistory from '@/components/MedicalHistory';
 import TreatmentPlan from '@/components/TreatmentPlan';
 import ProviderNotes from '@/components/ProviderNotes';
 import ProviderAssignment from '@/components/ProviderAssignment';
-import { Brain, CalendarCheck, ClockAlert, Heart, MessageCircle } from 'lucide-react';
+import { Brain, CalendarCheck, ClockAlert, Heart, Menu, MessageCircle } from 'lucide-react';
+import { BookOpen, Calendar, ClipboardList, Info, Users } from '@/components/SidebarIcons';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Index = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card">
@@ -26,6 +30,75 @@ const Index = () => {
           </div>
         </div>
       </header>
+      
+      {/* Floating sidebar trigger button */}
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetTrigger asChild>
+          <button 
+            className="fixed top-20 right-6 z-50 flex items-center justify-center w-12 h-12 bg-primary rounded-full shadow-lg hover:bg-primary/90 transition-colors"
+            aria-label="Open sidebar"
+          >
+            <Menu className="h-6 w-6 text-primary-foreground" />
+          </button>
+        </SheetTrigger>
+        
+        <SheetContent className="w-[280px] sm:w-[350px]">
+          <div className="px-2 py-6">
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <img 
+                src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
+                alt="Hana Clinic Logo" 
+                className="h-8 w-auto"
+              />
+              <span>Hana Clinic</span>
+            </h2>
+            
+            <div className="space-y-4">
+              <div className="border rounded-lg p-4">
+                <h3 className="font-medium mb-2">Quick Actions</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors text-left">
+                      <Calendar className="h-4 w-4" />
+                      <span>Schedule Appointment</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors text-left">
+                      <ClipboardList className="h-4 w-4" />
+                      <span>Patient Records</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors text-left">
+                      <Users className="h-4 w-4" />
+                      <span>Provider Directory</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="border rounded-lg p-4">
+                <h3 className="font-medium mb-2">Resources</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors text-left">
+                      <BookOpen className="h-4 w-4" />
+                      <span>Treatment Guidelines</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors text-left">
+                      <Info className="h-4 w-4" />
+                      <span>Help Center</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
       
       <main className="container py-6">
         <PatientHeader patient={patientData} />
