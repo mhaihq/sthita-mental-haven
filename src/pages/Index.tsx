@@ -12,25 +12,15 @@ import {
   AlertTriangle, FileText, Users as UsersIcon, Calendar, ClipboardList
 } from 'lucide-react';
 import { BookOpen } from '@/components/SidebarIcons';
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
+import HanaSidebar from '@/components/layout/HanaSidebar';
 
 const Index = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
-
-  const newPatientData = {
-    name: "Sthita Pujari",
-    age: 27,
-    gender: "Male",
-    lastContact: "3 days ago",
-    conditions: ["Hypertension", "Type 2 Diabetes", "Depression"],
-    careProgram: "Chronic Care Management"
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -46,163 +36,6 @@ const Index = () => {
               <h1 className="text-2xl font-bold text-primary">Hana Compass</h1>
             </div>
             <div className="flex items-center gap-4">
-              <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-                <SheetTrigger asChild>
-                  <button 
-                    className="flex items-center justify-center w-10 h-10 bg-primary rounded-full shadow-lg hover:bg-primary/90 transition-colors pulse-animation"
-                    aria-label="Open sidebar"
-                  >
-                    <img 
-                      src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
-                      alt="Hana Clinic Logo" 
-                      className="h-8 w-8 object-contain"
-                    />
-                  </button>
-                </SheetTrigger>
-                
-                <SheetContent width="66.666%" className="overflow-y-auto">
-                  <div className="py-6">
-                    <div className="flex items-center gap-2 px-6 mb-6">
-                      <img 
-                        src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
-                        alt="Hana Clinic Logo" 
-                        className="h-8 w-auto"
-                      />
-                      <span className="text-xl font-bold">Hana Compass</span>
-                    </div>
-                    
-                    {/* Patient Information Header */}
-                    <div className="px-6 mb-8">
-                      <h2 className="text-3xl font-bold mb-2">{newPatientData.name}</h2>
-                      <div className="flex items-center text-muted-foreground mb-3">
-                        <span>{newPatientData.age} yrs</span>
-                        <span className="mx-2">•</span>
-                        <span>{newPatientData.gender}</span>
-                        <span className="mx-2">•</span>
-                        <span>Last Contact: {newPatientData.lastContact}</span>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        <Badge className="px-4 py-1 rounded-full bg-teal-500 text-white">{newPatientData.conditions[0]}</Badge>
-                        <Badge className="px-4 py-1 rounded-full bg-teal-500 text-white">{newPatientData.conditions[1]}</Badge>
-                        <Badge className="px-4 py-1 rounded-full bg-teal-500 text-white">{newPatientData.conditions[2]}</Badge>
-                      </div>
-                      
-                      <div className="flex items-center justify-between mb-4">
-                        <Badge className="px-3 py-1 bg-blue-100 text-blue-600 border border-blue-200">
-                          {newPatientData.careProgram}
-                        </Badge>
-                        
-                        <div className="flex gap-6">
-                          <div className="flex items-center gap-2 text-green-600">
-                            <FileText size={18} />
-                            <span className="text-sm">Care Plan Updated: Apr 2</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-green-600">
-                            <Check size={18} />
-                            <span className="text-sm">Consent</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Navigation Tabs */}
-                      <div className="flex overflow-x-auto gap-2 pb-2">
-                        <Button variant="outline" className="flex items-center gap-2 bg-white rounded-lg">
-                          <FileText size={18} />
-                          <span>Overview</span>
-                        </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
-                          <ClipboardList size={18} />
-                          <span>Care Tasks</span>
-                        </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
-                          <UsersIcon size={18} />
-                          <span>Agents</span>
-                        </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
-                          <Calendar size={18} />
-                          <span>Care Log</span>
-                        </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
-                          <FileText size={18} />
-                          <span>Billing</span>
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    {/* Alert Information */}
-                    <div className="px-6 mb-6">
-                      <Alert className="bg-amber-50 border-amber-200">
-                        <AlertTriangle className="h-5 w-5 text-amber-600" />
-                        <AlertTitle className="text-amber-800">Hey, {newPatientData.name.split(" ")[0]}'s PHQ jumped to 13</AlertTitle>
-                        <AlertDescription className="text-amber-700">
-                          this week (from 8), missed 2 Lisinopril doses and skipped a check-in. Billing's at 19/20. Want to wrap this up?
-                        </AlertDescription>
-                      </Alert>
-                    </div>
-                    
-                    {/* Risk Level */}
-                    <div className="px-6 mb-6">
-                      <div className="flex justify-between mb-2">
-                        <span>Risk Level</span>
-                        <span className="text-red-500 font-medium">High Risk</span>
-                      </div>
-                      <Progress
-                        value={85}
-                        className="h-2 bg-gradient-to-r from-red-500 via-amber-400 to-emerald-400"
-                      />
-                    </div>
-                    
-                    {/* Priority Tasks */}
-                    <div className="px-6">
-                      <h3 className="font-medium mb-4">Priority Tasks</h3>
-                      
-                      <div className="space-y-4">
-                        <div className="border-l-4 border-red-500 pl-4 pr-2 py-2 bg-white rounded-md shadow-sm">
-                          <div className="flex items-start justify-between mb-1">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <ArrowUpRight className="text-red-500" size={18} />
-                                <span className="font-medium">PHQ-9 ↑ 13</span>
-                                <Badge className="bg-red-100 text-red-600 border-0">Needs Review</Badge>
-                              </div>
-                              <p className="text-sm text-gray-600 mt-1">Score increased from 8 on Apr 1</p>
-                              <p className="text-sm text-gray-600">ID: T-1001 Due: Today</p>
-                            </div>
-                            <Button variant="outline" size="sm" className="rounded-full">
-                              <span>View</span>
-                            </Button>
-                          </div>
-                        </div>
-                        
-                        <div className="border-l-4 border-amber-500 pl-4 pr-2 py-2 bg-white rounded-md shadow-sm">
-                          <div className="flex items-start justify-between mb-1">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <FileText className="text-amber-500" size={18} />
-                                <span className="font-medium">Missed Lisinopril</span>
-                                <Badge className="bg-amber-100 text-amber-600 border-0">Assigned</Badge>
-                              </div>
-                              <p className="text-sm text-gray-600 mt-1">2 doses missed (Apr 3-4)</p>
-                              <p className="text-sm text-gray-600">ID: T-1002 Due: Today</p>
-                            </div>
-                            <Button variant="outline" size="sm" className="rounded-full">
-                              <span>View</span>
-                            </Button>
-                          </div>
-                        </div>
-                        
-                        <div className="text-center mt-6">
-                          <Button variant="link" className="text-blue-500">
-                            +1 more tasks
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-              
               <Button variant="outline" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
                 <span>Patient</span>
@@ -290,17 +123,20 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Add Hana Sidebar */}
+      <HanaSidebar />
       
       <style jsx global>{`
         @keyframes pulse {
           0% {
-            box-shadow: 0 0 0 0 rgba(155, 135, 245, 0.7);
+            box-shadow: 0 0 0 0 rgba(30, 77, 54, 0.7);
           }
           70% {
-            box-shadow: 0 0 0 10px rgba(155, 135, 245, 0);
+            box-shadow: 0 0 0 10px rgba(30, 77, 54, 0);
           }
           100% {
-            box-shadow: 0 0 0 0 rgba(155, 135, 245, 0);
+            box-shadow: 0 0 0 0 rgba(30, 77, 54, 0);
           }
         }
         
@@ -319,6 +155,21 @@ const Index = () => {
         .medical-scrollbar::-webkit-scrollbar-thumb {
           background: #888;
           border-radius: 2px;
+        }
+
+        .fade-in {
+          animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </div>
