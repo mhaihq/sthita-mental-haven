@@ -127,7 +127,8 @@ const Index = () => {
       {/* Add Hana Sidebar */}
       <HanaSidebar />
       
-      <style jsx global>{`
+      <style>
+        {`
         @keyframes pulse {
           0% {
             box-shadow: 0 0 0 0 rgba(30, 77, 54, 0.7);
@@ -171,7 +172,8 @@ const Index = () => {
             transform: translateY(0);
           }
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
