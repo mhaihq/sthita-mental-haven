@@ -112,8 +112,11 @@ export const HanaSidebar = () => {
             </Button>
           </div>
           
+          {/* White margin separator */}
+          <div className="h-4 bg-white"></div>
+          
           {/* Tab Content - Fixed padding and spacing */}
-          <div className="flex-grow overflow-y-auto p-4 mt-4">
+          <div className="flex-grow overflow-y-auto p-4">
             {activeTab === 'overview' && <OverviewTab />}
             {activeTab === 'tasks' && (
               <div>
