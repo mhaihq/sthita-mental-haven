@@ -64,7 +64,7 @@ export const HanaSidebar = () => {
         </button>
       </SheetTrigger>
       
-      <SheetContent className="p-0 max-w-2/3 w-2/3 border-l border-gray-200 overflow-y-auto bg-[#F2FCE2]">
+      <SheetContent className="p-0 max-w-2/3 w-2/3 border-l border-gray-200 overflow-y-auto bg-[#E6F0EE]">
         <div className="flex flex-col h-full">
           {/* Sidebar Header with frosted glass effect */}
           <div className="relative">

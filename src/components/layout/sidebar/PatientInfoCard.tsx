@@ -41,7 +41,7 @@ export const PatientInfoCard: React.FC<PatientInfoCardProps> = ({
         <p className="text-gray-500 mb-2">Conditions:</p>
         <div className="flex flex-wrap gap-2">
           {medicalConditions.map((condition, index) => (
-            <Badge key={index} variant="outline" className="bg-[#F2FCE2] text-[#1E4D36] border-[#1E4D36]">
+            <Badge key={index} variant="outline" className="bg-[#E6F0EE] text-[#1E4D36] border-[#1E4D36]">
               {condition}
             </Badge>
           ))}
