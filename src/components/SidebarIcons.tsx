@@ -1,4 +1,4 @@
 
-import { ArrowUpRight, Check, AlertTriangle, BookOpen, Calendar, ClipboardList, Info, Users } from 'lucide-react';
+import { ArrowUpRight, Check, AlertTriangle, BookOpen, Calendar, ClipboardList, Info, Users, FileText } from 'lucide-react';
 
-export { ArrowUpRight, Check, AlertTriangle, BookOpen, Calendar, ClipboardList, Info, Users };
+export { ArrowUpRight, Check, AlertTriangle, BookOpen, Calendar, ClipboardList, Info, Users, FileText };
