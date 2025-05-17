@@ -24,7 +24,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
+      <header className="border-b bg-card backdrop-blur-md bg-white/80">
         <div className="container py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
@@ -35,17 +35,7 @@ const Index = () => {
               />
               <h1 className="text-2xl font-bold text-primary">Hana Compass</h1>
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="outline" className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>Patient</span>
-              </Button>
-              
-              <Button variant="outline" className="flex items-center gap-2">
-                <UsersIcon className="h-4 w-4" />
-                <span>Population</span>
-              </Button>
-            </div>
+            {/* Patient and Population buttons removed */}
           </div>
         </div>
       </header>
