@@ -6,7 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
-import { patientData } from '@/data/patientData';
+
+// Define mock conditions if not available from patientData
+const patientConditions = ["Hypertension", "Type 2 Diabetes", "Depression"];
 
 const OverviewTab = () => {
   // Data for priority tasks
@@ -89,12 +91,6 @@ const OverviewTab = () => {
       code: "99484" 
     }
   ];
-
-  // Open sidebar with care tasks 
-  const openCareTasksSidebar = () => {
-    // This will be handled through triggering the Sheet component
-    console.log("Opening care tasks in sidebar");
-  };
 
   return (
     <div className="space-y-8">
@@ -206,7 +202,7 @@ const OverviewTab = () => {
                 <div>
                   <h3 className="font-medium">Conditions</h3>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {patientData.conditions.map((condition, index) => (
+                    {patientConditions.map((condition, index) => (
                       <Badge key={index} className="bg-blue-100 text-blue-700">{condition}</Badge>
                     ))}
                   </div>

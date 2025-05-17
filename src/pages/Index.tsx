@@ -282,7 +282,8 @@ const Index = () => {
         </Tabs>
       </main>
       
-      <style jsx>{`
+      <style>
+        {`
         @keyframes pulse {
           0% {
             box-shadow: 0 0 0 0 rgba(155, 135, 245, 0.7);
@@ -311,7 +312,8 @@ const Index = () => {
           background: #888;
           border-radius: 2px;
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
