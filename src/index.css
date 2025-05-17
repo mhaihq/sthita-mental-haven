@@ -101,3 +101,47 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Add subtle pulse animation for the floating button */
+@keyframes subtle-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.pulse-animation {
+  animation: subtle-pulse 3s infinite ease-in-out;
+}
+
+/* Additional styles for the sidebar elements */
+.risk-badge {
+  @apply px-2 py-0.5 text-xs font-medium rounded-full;
+}
+
+.risk-badge.high {
+  @apply bg-severity-high/20 text-severity-high;
+}
+
+.risk-badge.medium {
+  @apply bg-severity-medium/20 text-severity-medium;
+}
+
+.risk-badge.low {
+  @apply bg-severity-low/20 text-severity-low;
+}
+
+.task-priority {
+  @apply w-2 h-2 rounded-full;
+}
+
+.task-priority.high {
+  @apply bg-severity-high;
+}
+
+.task-priority.medium {
+  @apply bg-severity-medium;
+}
+
+.task-priority.low {
+  @apply bg-severity-low;
+}
