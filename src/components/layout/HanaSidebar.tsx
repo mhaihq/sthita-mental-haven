@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { BookOpen } from '@/components/SidebarIcons';
+import { BookOpen, ArrowUpRight } from '@/components/SidebarIcons';
 import OverviewTab from '../overview/OverviewTab';
 import { Badge } from '@/components/ui/badge';
 import { patientData } from '@/data/patientData';
