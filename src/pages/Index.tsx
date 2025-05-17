@@ -7,7 +7,6 @@ import MedicalHistory from '@/components/MedicalHistory';
 import TreatmentPlan from '@/components/TreatmentPlan';
 import ProviderNotes from '@/components/ProviderNotes';
 import ProviderAssignment from '@/components/ProviderAssignment';
-import OverviewTab from '@/components/OverviewTab';
 import { 
   Brain, CalendarCheck, ClockAlert, Heart, MessageCircle, ArrowUpRight, Check, 
   AlertTriangle, FileText, Users as UsersIcon, Calendar, ClipboardList
@@ -261,7 +260,17 @@ const Index = () => {
           </TabsList>
           
           <TabsContent value="overview" className="fade-in">
-            <OverviewTab />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <MedicalHistory patient={patientData} />
+              </div>
+              <div>
+                <TreatmentPlan patient={patientData} />
+              </div>
+            </div>
+            <div className="mt-6">
+              <ProviderNotes patient={patientData} />
+            </div>
           </TabsContent>
           
           <TabsContent value="sessions" className="fade-in">
@@ -282,8 +291,7 @@ const Index = () => {
         </Tabs>
       </main>
       
-      <style>
-        {`
+      <style jsx global>{`
         @keyframes pulse {
           0% {
             box-shadow: 0 0 0 0 rgba(155, 135, 245, 0.7);
@@ -312,8 +320,7 @@ const Index = () => {
           background: #888;
           border-radius: 2px;
         }
-        `}
-      </style>
+      `}</style>
     </div>
   );
 };
