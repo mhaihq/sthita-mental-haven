@@ -15,7 +15,14 @@ const Index = () => {
       <header className="border-b bg-card">
         <div className="container py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-primary">Mental Health Clinic EHR</h1>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
+                alt="Hana Clinic Logo" 
+                className="h-10 w-auto"
+              />
+              <h1 className="text-2xl font-bold text-primary">Mental Health Clinic EHR</h1>
+            </div>
           </div>
         </div>
       </header>
