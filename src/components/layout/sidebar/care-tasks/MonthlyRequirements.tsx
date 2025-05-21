@@ -25,23 +25,24 @@ export const MonthlyRequirements: React.FC<MonthlyRequirementsProps> = ({
   }
   
   return (
-    <Card className="bg-white rounded-lg shadow-sm">
+    <Card className="bg-white rounded-lg shadow-sm hover-scale animate-fade-in">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-medium text-lg">Monthly Requirements</h4>
+          <h4 className="font-medium text-lg text-hana-green">Monthly Requirements</h4>
           <Badge className="bg-blue-50 text-blue-600 border-blue-100">
             April 2025
           </Badge>
         </div>
         
         <div className="space-y-4">
-          {cptCodes.map(cptCode => (
+          {cptCodes.map((cptCode, index) => (
             <CptCodeProgressCard 
               key={cptCode}
               cptCode={cptCode}
               cptCodeInfo={cptCodeInfo[cptCode]}
               completedMinutes={completedMinutes[cptCode] || 0}
               totalRequiredMinutes={totalRequiredMinutes[cptCode] || 0}
+              className={`delay-${index * 100} animate-fade-in`}
             />
           ))}
         </div>
