@@ -25,27 +25,27 @@ export const MonthlyRequirements: React.FC<MonthlyRequirementsProps> = ({
   }
   
   return (
-    <div className="space-y-4">
-      {/* Time tracking section at the top */}
-      <div className="flex justify-between items-center">
-        <h4 className="font-medium text-lg">Time Requirements</h4>
-        <Badge className="bg-blue-50 text-blue-600 border-blue-100">
-          April 2025
-        </Badge>
-      </div>
-      
-      {/* Progress tracking cards */}
-      <div className="space-y-4">
-        {cptCodes.map(cptCode => (
-          <CptCodeProgressCard 
-            key={cptCode}
-            cptCode={cptCode}
-            cptCodeInfo={cptCodeInfo[cptCode]}
-            completedMinutes={completedMinutes[cptCode] || 0}
-            totalRequiredMinutes={totalRequiredMinutes[cptCode] || 0}
-          />
-        ))}
-      </div>
-    </div>
+    <Card className="bg-white rounded-lg shadow-sm">
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="font-medium text-lg">Monthly Requirements</h4>
+          <Badge className="bg-blue-50 text-blue-600 border-blue-100">
+            April 2025
+          </Badge>
+        </div>
+        
+        <div className="space-y-4">
+          {cptCodes.map(cptCode => (
+            <CptCodeProgressCard 
+              key={cptCode}
+              cptCode={cptCode}
+              cptCodeInfo={cptCodeInfo[cptCode]}
+              completedMinutes={completedMinutes[cptCode] || 0}
+              totalRequiredMinutes={totalRequiredMinutes[cptCode] || 0}
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
