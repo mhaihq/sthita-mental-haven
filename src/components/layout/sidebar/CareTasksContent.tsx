@@ -3,6 +3,7 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
 import { CareTasksGroup } from './care-tasks/CareTasksGroup';
 import { MonthlyRequirements } from './care-tasks/MonthlyRequirements';
 import { 
@@ -38,20 +39,38 @@ export const CareTasksContent: React.FC = () => {
         </Button>
       </div>
       
-      {/* BHI Progress Tracking Card */}
-      <MonthlyRequirements 
-        cptCodeInfo={filteredCptCodeInfo}
-        completedMinutes={filteredCompletedMinutes}
-        totalRequiredMinutes={filteredTotalRequiredMinutes}
-      />
+      {/* Top section - Time tracking */}
+      <Card className="bg-white rounded-lg shadow-sm">
+        <CardContent className="p-4">
+          <MonthlyRequirements 
+            cptCodeInfo={filteredCptCodeInfo}
+            completedMinutes={filteredCompletedMinutes}
+            totalRequiredMinutes={filteredTotalRequiredMinutes}
+          />
+        </CardContent>
+      </Card>
       
-      {/* 99484 - BHI Tasks */}
-      <CareTasksGroup
-        cptCode={bhiCode}
-        title="Behavioral Health Tasks"
-        tasks={careTasksData[bhiCode]}
-        onTaskClick={handleTaskClick}
-      />
+      {/* Sidebar section - Tasks */}
+      <div className="space-y-4">
+        {/* PHQ-9 Tasks */}
+        <Card className="bg-white rounded-lg shadow-sm">
+          <CardContent className="p-4">
+            <h4 className="text-md font-medium mb-3">PHQ-9 Assessment</h4>
+            <p className="text-sm text-gray-600 mb-2">Patient Health Questionnaire</p>
+            <Button size="sm" variant="default" className="bg-[#1E4D36] hover:bg-[#2A6349] w-full">
+              Complete Assessment
+            </Button>
+          </CardContent>
+        </Card>
+        
+        {/* BHI Tasks */}
+        <CareTasksGroup
+          cptCode={bhiCode}
+          title="Behavioral Health Tasks"
+          tasks={careTasksData[bhiCode]}
+          onTaskClick={handleTaskClick}
+        />
+      </div>
     </div>
   );
 };
