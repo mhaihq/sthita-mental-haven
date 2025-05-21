@@ -20,6 +20,12 @@ export const CareTasksContent: React.FC = () => {
     navigate(`/care-task/${taskId}`);
   };
   
+  // Filter to only show the BHI data
+  const bhiCode = '99484';
+  const filteredCptCodeInfo = { [bhiCode]: cptCodeInfo[bhiCode] };
+  const filteredCompletedMinutes = { [bhiCode]: completedMinutes[bhiCode] };
+  const filteredTotalRequiredMinutes = { [bhiCode]: totalRequiredMinutes[bhiCode] };
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center mb-4">
@@ -34,16 +40,16 @@ export const CareTasksContent: React.FC = () => {
       
       {/* BHI Progress Tracking Card */}
       <MonthlyRequirements 
-        cptCodeInfo={{ '99484': cptCodeInfo['99484'] }}
-        completedMinutes={{ '99484': completedMinutes['99484'] }}
-        totalRequiredMinutes={{ '99484': totalRequiredMinutes['99484'] }}
+        cptCodeInfo={filteredCptCodeInfo}
+        completedMinutes={filteredCompletedMinutes}
+        totalRequiredMinutes={filteredTotalRequiredMinutes}
       />
       
       {/* 99484 - BHI Tasks */}
       <CareTasksGroup
-        cptCode="99484"
+        cptCode={bhiCode}
         title="Behavioral Health Tasks"
-        tasks={careTasksData['99484']}
+        tasks={careTasksData[bhiCode]}
         onTaskClick={handleTaskClick}
       />
     </div>

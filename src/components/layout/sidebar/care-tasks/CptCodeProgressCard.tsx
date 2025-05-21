@@ -17,6 +17,11 @@ export const CptCodeProgressCard: React.FC<CptCodeProgressCardProps> = ({
   completedMinutes, 
   totalRequiredMinutes 
 }) => {
+  // Check if cptCodeInfo is defined before accessing properties
+  if (!cptCodeInfo) {
+    return null; // Don't render anything if data is missing
+  }
+  
   const progressPercentage = (completedMinutes / totalRequiredMinutes) * 100;
   const remainingMinutes = totalRequiredMinutes - completedMinutes;
   

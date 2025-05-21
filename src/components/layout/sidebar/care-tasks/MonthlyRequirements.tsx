@@ -16,6 +16,14 @@ export const MonthlyRequirements: React.FC<MonthlyRequirementsProps> = ({
   completedMinutes, 
   totalRequiredMinutes 
 }) => {
+  // Get available CPT codes from the data
+  const cptCodes = Object.keys(cptCodeInfo || {});
+  
+  // If no data, don't render anything
+  if (!cptCodes.length) {
+    return null;
+  }
+  
   return (
     <Card className="bg-white rounded-lg shadow-sm">
       <CardContent className="p-4">
@@ -27,21 +35,15 @@ export const MonthlyRequirements: React.FC<MonthlyRequirementsProps> = ({
         </div>
         
         <div className="space-y-4">
-          {/* 99490 - CCM */}
-          <CptCodeProgressCard 
-            cptCode="99490"
-            cptCodeInfo={cptCodeInfo['99490']}
-            completedMinutes={completedMinutes['99490']}
-            totalRequiredMinutes={totalRequiredMinutes['99490']}
-          />
-          
-          {/* 99484 - BHI */}
-          <CptCodeProgressCard 
-            cptCode="99484"
-            cptCodeInfo={cptCodeInfo['99484']}
-            completedMinutes={completedMinutes['99484']}
-            totalRequiredMinutes={totalRequiredMinutes['99484']}
-          />
+          {cptCodes.map(cptCode => (
+            <CptCodeProgressCard 
+              key={cptCode}
+              cptCode={cptCode}
+              cptCodeInfo={cptCodeInfo[cptCode]}
+              completedMinutes={completedMinutes[cptCode] || 0}
+              totalRequiredMinutes={totalRequiredMinutes[cptCode] || 0}
+            />
+          ))}
         </div>
       </CardContent>
     </Card>
