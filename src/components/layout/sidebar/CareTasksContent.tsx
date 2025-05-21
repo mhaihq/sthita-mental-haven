@@ -142,7 +142,7 @@ export const CareTasksContent: React.FC = () => {
   const navigate = useNavigate();
   
   const handleTaskClick = (taskId: string) => {
-    // Navigate to a task detail page (placeholder route)
+    // Navigate to the task detail page
     navigate(`/care-task/${taskId}`);
   };
 
@@ -249,13 +249,15 @@ export const CareTasksContent: React.FC = () => {
           Behavioral Health Tasks
         </h4>
         
-        {careTasksData['99484'].map(task => (
-          <CareTaskCard 
-            key={task.id} 
-            task={task}
-            onClick={() => handleTaskClick(task.id)}
-          />
-        ))}
+        <div className="bg-gray-50 p-3 rounded-lg">
+          {careTasksData['99484'].map(task => (
+            <CareTaskCard 
+              key={task.id} 
+              task={task}
+              onClick={() => handleTaskClick(task.id)}
+            />
+          ))}
+        </div>
       </div>
       
       {/* 99490 - CCM Tasks */}
@@ -267,13 +269,15 @@ export const CareTasksContent: React.FC = () => {
           Chronic Care Management Tasks
         </h4>
         
-        {careTasksData['99490'].map(task => (
-          <CareTaskCard 
-            key={task.id} 
-            task={task}
-            onClick={() => handleTaskClick(task.id)}
-          />
-        ))}
+        <div className="bg-gray-50 p-3 rounded-lg">
+          {careTasksData['99490'].map(task => (
+            <CareTaskCard 
+              key={task.id} 
+              task={task}
+              onClick={() => handleTaskClick(task.id)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
