@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, BadgeAlert } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -64,11 +63,10 @@ export const HanaSidebar = () => {
         </button>
       </SheetTrigger>
       
-      <SheetContent className="p-0 max-w-2/3 w-2/3 border-l border-gray-200 overflow-y-auto bg-[#E6F0EE]">
+      <SheetContent className="p-0 max-w-2/3 w-2/3 border-l border-gray-200 overflow-y-auto bg-[#F1F1F1]">
         <div className="flex flex-col h-full">
-          {/* Sidebar Header with frosted glass effect */}
-          <div className="relative">
-            <div className="absolute inset-0 backdrop-blur-md bg-white/70 z-0"></div>
+          {/* Sidebar Header with modern minimal design */}
+          <div className="relative bg-white shadow-sm">
             <div className="relative z-10 flex items-center justify-between p-6">
               <div className="flex items-center gap-3">
                 <img 
@@ -102,9 +100,6 @@ export const HanaSidebar = () => {
           {/* Navigation Tabs - With sticky positioning */}
           <SidebarTabs activeTab={activeTab} setActiveTab={setActiveTab} />
           
-          {/* Add white background to create space */}
-          <div className="bg-white h-4"></div>
-          
           {/* Tab Content */}
           <div className="flex-grow overflow-y-auto p-4">
             {activeTab === 'overview' && <ModifiedOverviewTab onTaskClick={handleTaskClick} />}
@@ -114,14 +109,11 @@ export const HanaSidebar = () => {
             {activeTab === 'billing' && <BillingContent />}
           </div>
           
-          {/* Footer with frosted glass effect */}
-          <div className="relative">
-            <div className="absolute inset-0 backdrop-blur-md bg-white/70 z-0"></div>
-            <div className="relative z-10 p-4 border-t border-gray-200">
-              <p className="text-xs text-gray-500 text-center">
-                Hana Compass • Patient: Sthita Pujari • Last updated: 3 days ago
-              </p>
-            </div>
+          {/* Footer with minimal design */}
+          <div className="bg-white shadow-sm p-4 border-t border-gray-200">
+            <p className="text-xs text-gray-500 text-center">
+              Hana Compass • Patient: Sthita Pujari • Last updated: 3 days ago
+            </p>
           </div>
         </div>
       </SheetContent>
