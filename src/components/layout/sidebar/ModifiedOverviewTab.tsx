@@ -81,10 +81,7 @@ export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTask
         <Card className="bg-white border-none shadow-sm rounded-lg overflow-hidden">
           <div className="bg-[#1E4D36] px-4 py-3">
             <div className="flex justify-between items-center">
-              <div>
-                <h4 className="text-white font-medium">AI Conversation History</h4>
-                <p className="text-green-100 text-sm">Last call: 2 days ago</p>
-              </div>
+              <h4 className="text-white font-medium">AI Conversation History</h4>
               <Badge className="bg-green-100 text-green-700">
                 Data from {getTimeSinceLastCall()}
               </Badge>
@@ -226,3 +223,4 @@ export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTask
     </div>
   );
 };
+
