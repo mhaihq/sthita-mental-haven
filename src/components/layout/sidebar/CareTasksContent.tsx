@@ -32,11 +32,11 @@ export const CareTasksContent: React.FC = () => {
         </Button>
       </div>
       
-      {/* CCM Progress Tracking Card */}
+      {/* BHI Progress Tracking Card */}
       <MonthlyRequirements 
-        cptCodeInfo={cptCodeInfo}
-        completedMinutes={completedMinutes}
-        totalRequiredMinutes={totalRequiredMinutes}
+        cptCodeInfo={{ '99484': cptCodeInfo['99484'] }}
+        completedMinutes={{ '99484': completedMinutes['99484'] }}
+        totalRequiredMinutes={{ '99484': totalRequiredMinutes['99484'] }}
       />
       
       {/* 99484 - BHI Tasks */}
@@ -44,14 +44,6 @@ export const CareTasksContent: React.FC = () => {
         cptCode="99484"
         title="Behavioral Health Tasks"
         tasks={careTasksData['99484']}
-        onTaskClick={handleTaskClick}
-      />
-      
-      {/* 99490 - CCM Tasks */}
-      <CareTasksGroup
-        cptCode="99490"
-        title="Chronic Care Management Tasks"
-        tasks={careTasksData['99490']}
         onTaskClick={handleTaskClick}
       />
     </div>
