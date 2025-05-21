@@ -9,13 +9,15 @@ interface CptCodeProgressCardProps {
   cptCodeInfo: CptCodeInfo;
   completedMinutes: number;
   totalRequiredMinutes: number;
+  className?: string; // Added className as an optional prop
 }
 
 export const CptCodeProgressCard: React.FC<CptCodeProgressCardProps> = ({ 
   cptCode, 
   cptCodeInfo, 
   completedMinutes, 
-  totalRequiredMinutes 
+  totalRequiredMinutes,
+  className = '' // Default to empty string if not provided
 }) => {
   // Check if cptCodeInfo is defined before accessing properties
   if (!cptCodeInfo) {
@@ -26,7 +28,7 @@ export const CptCodeProgressCard: React.FC<CptCodeProgressCardProps> = ({
   const remainingMinutes = totalRequiredMinutes - completedMinutes;
   
   return (
-    <div className="p-3 bg-gray-50 rounded-lg">
+    <div className={`p-3 bg-gray-50 rounded-lg ${className}`}>
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
