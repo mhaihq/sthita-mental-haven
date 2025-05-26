@@ -1,10 +1,11 @@
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Check, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { Play, Check, X, AudioWaveform } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AudioPlayer } from './AudioPlayer';
 
 interface EvidenceCardProps {
   evidence: {
@@ -25,98 +26,7 @@ export const EvidenceCard: React.FC<EvidenceCardProps> = ({
   onReject,
   status
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(evidence.duration || 25); // Default 25 seconds
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Generate mock waveform data for visualization
-  const generateWaveform = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const width = canvas.width;
-    const height = canvas.height;
-    const barWidth = 2;
-    const barCount = Math.floor(width / (barWidth + 1));
-
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = '#e5e7eb'; // Gray color for background bars
-
-    // Generate random waveform pattern
-    for (let i = 0; i < barCount; i++) {
-      const barHeight = Math.random() * height * 0.8 + height * 0.1;
-      const x = i * (barWidth + 1);
-      const y = (height - barHeight) / 2;
-      
-      // Highlight played portion
-      if ((i / barCount) * duration <= currentTime) {
-        ctx.fillStyle = '#3b82f6'; // Blue for played portion
-      } else {
-        ctx.fillStyle = '#e5e7eb'; // Gray for unplayed portion
-      }
-      
-      ctx.fillRect(x, y, barWidth, barHeight);
-    }
-  };
-
-  useEffect(() => {
-    generateWaveform();
-  }, [currentTime, duration]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
-
-    audio.addEventListener('timeupdate', updateTime);
-    audio.addEventListener('loadedmetadata', updateDuration);
-    audio.addEventListener('ended', () => setIsPlaying(false));
-
-    return () => {
-      audio.removeEventListener('timeupdate', updateTime);
-      audio.removeEventListener('loadedmetadata', updateDuration);
-      audio.removeEventListener('ended', () => setIsPlaying(false));
-    };
-  }, []);
-
-  const togglePlayPause = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleSeek = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    const audio = audioRef.current;
-    if (!canvas || !audio) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = x / canvas.width;
-    const newTime = percentage * duration;
-    
-    audio.currentTime = newTime;
-    setCurrentTime(newTime);
-  };
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
+  const [showAudioDialog, setShowAudioDialog] = useState(false);
 
   const getStatusColor = () => {
     switch (status) {
@@ -126,107 +36,140 @@ export const EvidenceCard: React.FC<EvidenceCardProps> = ({
     }
   };
 
+  const getStatusIcon = () => {
+    switch (status) {
+      case 'saved': return <Check size={16} className="text-green-600" />;
+      case 'rejected': return <X size={16} className="text-red-600" />;
+      default: return null;
+    }
+  };
+
   return (
-    <Card className={`${getStatusColor()} transition-colors`}>
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="shrink-0">
-              {evidence.timestamp}
-            </Badge>
-            <Badge 
-              className={`text-xs ${
-                evidence.importance === 'high' 
-                  ? 'bg-red-100 text-red-800' 
-                  : 'bg-yellow-100 text-yellow-800'
-              }`}
-            >
-              {evidence.importance} priority
-            </Badge>
-          </div>
-          
-          {status !== 'pending' && (
-            <div className="flex items-center gap-1">
-              {status === 'saved' ? (
-                <>
-                  <Check size={16} className="text-green-600" />
-                  <span className="text-sm text-green-600 font-medium">Saved</span>
-                </>
-              ) : (
-                <>
-                  <X size={16} className="text-red-600" />
-                  <span className="text-sm text-red-600 font-medium">Rejected</span>
-                </>
-              )}
+    <>
+      <Card className={`${getStatusColor()} transition-colors h-full`}>
+        <CardContent className="p-4">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="shrink-0 text-xs">
+                {evidence.timestamp}
+              </Badge>
+              <Badge 
+                className={`text-xs ${
+                  evidence.importance === 'high' 
+                    ? 'bg-red-100 text-red-800' 
+                    : 'bg-yellow-100 text-yellow-800'
+                }`}
+              >
+                {evidence.importance}
+              </Badge>
             </div>
-          )}
-        </div>
+            
+            {status !== 'pending' && (
+              <div className="flex items-center gap-1">
+                {getStatusIcon()}
+              </div>
+            )}
+          </div>
 
-        <div className="mb-4">
-          <p className="text-gray-700 italic">"{evidence.text}"</p>
-        </div>
+          <div className="mb-4">
+            <p className="text-gray-700 italic text-sm line-clamp-3">"{evidence.text}"</p>
+          </div>
 
-        {/* Audio Player Section */}
-        <div className="bg-gray-50 p-3 rounded-lg mb-4">
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex flex-col gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={togglePlayPause}
-              className="shrink-0"
+              onClick={() => setShowAudioDialog(true)}
+              className="w-full"
             >
-              {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+              <AudioWaveform size={14} className="mr-2" />
+              View Audio & Transcript
             </Button>
+
+            {status === 'pending' && (
+              <div className="flex gap-2">
+                <Button
+                  onClick={onSaveToLog}
+                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  size="sm"
+                >
+                  <Check size={14} className="mr-1" />
+                  Save
+                </Button>
+                <Button
+                  onClick={onReject}
+                  variant="outline"
+                  className="flex-1 text-red-600 border-red-200 hover:bg-red-50"
+                  size="sm"
+                >
+                  <X size={14} className="mr-1" />
+                  Reject
+                </Button>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Audio & Transcript Dialog */}
+      <Dialog open={showAudioDialog} onOpenChange={setShowAudioDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Key Moment - {evidence.timestamp}</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-medium mb-2 text-blue-900">Key Moment</h4>
+              <p className="text-blue-800 italic">"{evidence.text}"</p>
+            </div>
             
-            <div className="flex-1">
-              <canvas
-                ref={canvasRef}
-                width={300}
-                height={60}
-                className="w-full h-15 cursor-pointer border rounded"
-                onClick={handleSeek}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="font-medium mb-3 flex items-center gap-2">
+                <AudioWaveform size={16} />
+                Audio Recording
+              </h4>
+              <AudioPlayer 
+                audioUrl={evidence.audioUrl || '#'}
+                duration={evidence.duration || 25}
               />
             </div>
             
-            <div className="text-sm text-gray-600 font-mono shrink-0">
-              {formatTime(currentTime)} / {formatTime(duration)}
+            <div>
+              <h4 className="font-medium mb-2">Full Conversation Transcript</h4>
+              <div className="bg-white p-4 rounded-md border max-h-64 overflow-y-auto">
+                <div className="space-y-2 text-sm">
+                  <div className="flex gap-4">
+                    <span className="text-blue-600 font-medium min-w-16">0:15</span>
+                    <span className="text-blue-600 font-medium">Care Manager:</span>
+                    <span className="text-gray-700">How have you been feeling lately?</span>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="text-purple-600 font-medium min-w-16">{evidence.timestamp}</span>
+                    <span className="text-purple-600 font-medium">Mary Johnson:</span>
+                    <span className="text-gray-700">{evidence.text}</span>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="text-blue-600 font-medium min-w-16">0:45</span>
+                    <span className="text-blue-600 font-medium">Care Manager:</span>
+                    <span className="text-gray-700">Can you tell me more about what's been going on?</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <Button 
+                onClick={onSaveToLog}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <Check size={16} className="mr-2" />
+                Save to Patient Log
+              </Button>
             </div>
           </div>
-          
-          <Progress value={(currentTime / duration) * 100} className="h-1" />
-          
-          {/* Hidden audio element - in production this would be the actual audio file */}
-          <audio
-            ref={audioRef}
-            src={evidence.audioUrl || '#'} // Placeholder - would be real audio URL
-            preload="metadata"
-            style={{ display: 'none' }}
-          />
-        </div>
-
-        {/* Action Buttons */}
-        {status === 'pending' && (
-          <div className="flex gap-2">
-            <Button
-              onClick={onSaveToLog}
-              className="flex-1 bg-green-600 hover:bg-green-700"
-              size="sm"
-            >
-              <Check size={14} className="mr-1" />
-              Save to Log
-            </Button>
-            <Button
-              onClick={onReject}
-              variant="outline"
-              className="flex-1 text-red-600 border-red-200 hover:bg-red-50"
-              size="sm"
-            >
-              <X size={14} className="mr-1" />
-              Reject
-            </Button>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

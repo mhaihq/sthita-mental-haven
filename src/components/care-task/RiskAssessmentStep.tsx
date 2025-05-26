@@ -35,7 +35,7 @@ export const RiskAssessmentStep: React.FC<RiskAssessmentStepProps> = ({
           Risk Assessment
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3 className="font-medium mb-2">Why this was flagged:</h3>
           <p className="text-gray-600">{task.flagReason}</p>
@@ -58,7 +58,7 @@ export const RiskAssessmentStep: React.FC<RiskAssessmentStepProps> = ({
             </div>
           </div>
           
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {task.evidenceFromCall.map((evidence: any, index: number) => (
               <EvidenceCard
                 key={index}
