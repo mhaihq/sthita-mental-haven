@@ -57,15 +57,12 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, duration }) 
     if (!audio) return;
 
     const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
 
     audio.addEventListener('timeupdate', updateTime);
-    audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('ended', () => setIsPlaying(false));
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
-      audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('ended', () => setIsPlaying(false));
     };
   }, []);

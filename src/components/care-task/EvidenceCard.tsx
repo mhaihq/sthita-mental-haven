@@ -141,17 +141,17 @@ export const EvidenceCard: React.FC<EvidenceCardProps> = ({
                 <div className="space-y-2 text-sm">
                   <div className="flex gap-4">
                     <span className="text-blue-600 font-medium min-w-16">0:15</span>
-                    <span className="text-blue-600 font-medium">Care Manager:</span>
+                    <span className="text-blue-600 font-medium">Hana:</span>
                     <span className="text-gray-700">How have you been feeling lately?</span>
                   </div>
                   <div className="flex gap-4">
                     <span className="text-purple-600 font-medium min-w-16">{evidence.timestamp}</span>
-                    <span className="text-purple-600 font-medium">Mary Johnson:</span>
+                    <span className="text-purple-600 font-medium">Patient:</span>
                     <span className="text-gray-700">{evidence.text}</span>
                   </div>
                   <div className="flex gap-4">
                     <span className="text-blue-600 font-medium min-w-16">0:45</span>
-                    <span className="text-blue-600 font-medium">Care Manager:</span>
+                    <span className="text-blue-600 font-medium">Hana:</span>
                     <span className="text-gray-700">Can you tell me more about what's been going on?</span>
                   </div>
                 </div>
