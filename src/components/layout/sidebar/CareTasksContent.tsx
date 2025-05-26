@@ -12,11 +12,7 @@ import {
   completedMinutes 
 } from './care-tasks/careTasksData';
 
-interface CareTasksContentProps {
-  onTaskDetailClick?: (taskId: string) => void;
-}
-
-export const CareTasksContent: React.FC<CareTasksContentProps> = ({ onTaskDetailClick }) => {
+export const CareTasksContent: React.FC = () => {
   const navigate = useNavigate();
   
   const handleTaskClick = (taskId: string) => {
@@ -55,7 +51,6 @@ export const CareTasksContent: React.FC<CareTasksContentProps> = ({ onTaskDetail
         title="Behavioral Health Tasks"
         tasks={careTasksData[bhiCode]}
         onTaskClick={handleTaskClick}
-        onTaskDetailClick={onTaskDetailClick}
       />
     </div>
   );

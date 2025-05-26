@@ -8,7 +8,6 @@ import { CareTasksContent } from './sidebar/CareTasksContent';
 import { AgentsCareLogContents } from './sidebar/AgentsCareLogContents';
 import { BillingContent } from './sidebar/BillingContent';
 import { PatientInfoCard } from './sidebar/PatientInfoCard';
-import { TaskTimeTracker } from './sidebar/TaskTimeTracker';
 
 // Calculate patient age based on date of birth
 const calculateAge = (dateOfBirth: string) => {
@@ -25,9 +24,8 @@ const calculateAge = (dateOfBirth: string) => {
 };
 
 export const HanaSidebar = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'tasks' | 'careLog' | 'billing'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'tasks' | 'agents' | 'careLog' | 'billing'>('overview');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [trackingTaskId, setTrackingTaskId] = useState<string | null>(null);
   
   // Calculate patient age
   const patientAge = calculateAge(patientData.dateOfBirth);
@@ -48,16 +46,6 @@ export const HanaSidebar = () => {
   // Handler to switch to tasks tab when priority task is clicked
   const handleTaskClick = () => {
     setActiveTab('tasks');
-  };
-
-  // Handler for task detail view with time tracking
-  const handleTaskDetailClick = (taskId: string) => {
-    setTrackingTaskId(taskId);
-  };
-
-  // Handler to go back to tasks list
-  const handleBackToTasks = () => {
-    setTrackingTaskId(null);
   };
   
   return (
@@ -115,16 +103,8 @@ export const HanaSidebar = () => {
           {/* Tab Content */}
           <div className="flex-grow overflow-y-auto p-4">
             {activeTab === 'overview' && <ModifiedOverviewTab onTaskClick={handleTaskClick} />}
-            {activeTab === 'tasks' && (
-              trackingTaskId ? (
-                <TaskTimeTracker 
-                  taskId={trackingTaskId} 
-                  onBack={handleBackToTasks} 
-                />
-              ) : (
-                <CareTasksContent onTaskDetailClick={handleTaskDetailClick} />
-              )
-            )}
+            {activeTab === 'tasks' && <CareTasksContent />}
+            {activeTab === 'agents' && <AgentsCareLogContents type="agents" />}
             {activeTab === 'careLog' && <AgentsCareLogContents type="careLog" />}
             {activeTab === 'billing' && <BillingContent />}
           </div>
