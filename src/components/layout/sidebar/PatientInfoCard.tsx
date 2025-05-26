@@ -26,7 +26,7 @@ export const PatientInfoCard: React.FC<PatientInfoCardProps> = ({
           <span className="font-medium text-gray-800">{patientData.name}</span>
         </div>
         <Badge variant="outline" className="text-xs bg-white border-[#1E4D36] text-[#1E4D36]">
-          {patientAge} y/o
+          {patientAge} y/o • {patientData.gender}
         </Badge>
       </div>
       

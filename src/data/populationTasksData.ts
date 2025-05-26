@@ -51,6 +51,18 @@ export const populationTasksData: PopulationTask[] = [
     taskType: 'Clinical Assessment'
   },
   {
+    id: 'T009',
+    title: 'Therapy Session Follow-up',
+    patientName: 'Sthita Pujari',
+    patientId: 'P100592',
+    description: 'Follow up on recent therapy session and medication adjustments',
+    priority: 'High',
+    estimatedTime: '20 min',
+    status: 'needs-review',
+    dueDate: '2023-05-23',
+    taskType: 'Clinical Follow-up'
+  },
+  {
     id: 'T003',
     title: 'Crisis Assessment',
     patientName: 'Maria Rodriguez',
