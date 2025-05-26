@@ -11,11 +11,9 @@ import {
   CheckCircle2,
   Activity,
   Calendar,
-  Eye,
   Clock
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
-import { Button } from '@/components/ui/button';
 
 const chartConfig = {
   timeSpent: {
@@ -72,57 +70,47 @@ export const InsightsContent: React.FC = () => {
       {/* Header - Left Aligned */}
       <div className="text-left">
         <div className="flex items-center gap-2 mb-2">
-          <TrendingUp size={24} className="text-blue-600" />
+          <TrendingUp size={24} className="text-[#1E4D36]" />
           <h2 className="text-xl font-semibold text-gray-900">Care Coordination Velocity Tracker</h2>
         </div>
         <p className="text-sm text-gray-600">
           Track your patient care progress against target population
         </p>
-        <div className="flex gap-2 mt-3">
-          <Button variant="outline" size="sm" className="text-blue-600 border-blue-600">
-            <Eye className="h-4 w-4 mr-1" />
-            View Patient List
-          </Button>
-          <Button variant="outline" size="sm" className="text-blue-600 border-blue-600">
-            <Calendar className="h-4 w-4 mr-1" />
-            Change Date Range
-          </Button>
-        </div>
       </div>
 
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-[#EBF4F0] border-[#1E4D36]/20">
           <CardContent className="p-4">
-            <div className="text-sm text-blue-700 mb-1">Patients engaged this week</div>
-            <div className="text-3xl font-bold text-blue-800 mb-1">5</div>
+            <div className="text-sm text-[#1E4D36] mb-1">Patients engaged this week</div>
+            <div className="text-3xl font-bold text-[#1E4D36] mb-1">5</div>
             <div className="flex items-center">
               <span className="text-xs text-green-600 font-medium">↑ 25%</span>
             </div>
-            <div className="text-xs text-blue-600 mt-1">Total: 15 this month</div>
+            <div className="text-xs text-[#2A6349] mt-1">Total: 15 this month</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-200">
+        <Card className="bg-[#EBF4F0] border-[#1E4D36]/20">
           <CardContent className="p-4">
-            <div className="text-sm text-purple-700 mb-1">Care target</div>
+            <div className="text-sm text-[#1E4D36] mb-1">Care target</div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-3xl font-bold text-purple-800">80%</span>
-              <span className="text-sm text-purple-600">complete</span>
+              <span className="text-3xl font-bold text-[#1E4D36]">80%</span>
+              <span className="text-sm text-[#2A6349]">complete</span>
             </div>
             <Progress value={80} className="h-2 mb-1" />
-            <div className="text-xs text-purple-600">4 of 5 target patients</div>
+            <div className="text-xs text-[#2A6349]">4 of 5 target patients</div>
           </CardContent>
         </Card>
 
-        <Card className="bg-green-50 border-green-200">
+        <Card className="bg-[#EBF4F0] border-[#1E4D36]/20">
           <CardContent className="p-4">
-            <div className="text-sm text-green-700 mb-1">Engagement rate</div>
+            <div className="text-sm text-[#1E4D36] mb-1">Engagement rate</div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-3xl font-bold text-green-800">90%</span>
-              <span className="text-sm text-green-600">response</span>
+              <span className="text-3xl font-bold text-[#1E4D36]">90%</span>
+              <span className="text-sm text-[#2A6349]">response</span>
             </div>
-            <div className="text-xs text-green-600">9 of 10 patients contacted</div>
+            <div className="text-xs text-[#2A6349]">9 of 10 patients contacted</div>
           </CardContent>
         </Card>
       </div>
@@ -145,9 +133,9 @@ export const InsightsContent: React.FC = () => {
                 <Line 
                   type="monotone" 
                   dataKey="enrolled" 
-                  stroke="#3B82F6" 
+                  stroke="#1E4D36" 
                   strokeWidth={3}
-                  dot={{ fill: "#3B82F6", strokeWidth: 2, r: 6 }}
+                  dot={{ fill: "#1E4D36", strokeWidth: 2, r: 6 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -156,19 +144,19 @@ export const InsightsContent: React.FC = () => {
       </Card>
 
       {/* Weekly Summary */}
-      <Card className="bg-blue-50 border-blue-200">
+      <Card className="bg-[#EBF4F0] border-[#1E4D36]/20">
         <CardContent className="p-6">
           <div className="mb-4">
-            <h3 className="text-lg font-semibold text-blue-900">Hello Dr. Martinez</h3>
+            <h3 className="text-lg font-semibold text-[#1E4D36]">Hello Dr. Martinez</h3>
             <Badge className="bg-green-100 text-green-800 border-green-300">Great week!</Badge>
           </div>
           <p className="text-gray-700 mb-4">
-            This week, you supported <strong>5 patients</strong>, completed <strong>8 care goals</strong>, and logged <strong>22 minutes</strong> of thoughtful, efficient care. <span className="text-blue-600 font-medium">That's 15% more time than last week.</span>
+            This week, you supported <strong>5 patients</strong>, completed <strong>8 care goals</strong>, and logged <strong>22 minutes</strong> of thoughtful, efficient care. <span className="text-[#1E4D36] font-medium">That's 15% more time than last week.</span>
           </p>
           
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="flex items-center gap-3">
-              <Users className="h-8 w-8 text-blue-600" />
+              <Users className="h-8 w-8 text-[#1E4D36]" />
               <div>
                 <div className="text-sm text-gray-600">Patients Supported</div>
                 <div className="text-xl font-bold text-gray-900">5</div>
@@ -189,7 +177,7 @@ export const InsightsContent: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Activity className="h-8 w-8 text-purple-600" />
+              <Activity className="h-8 w-8 text-[#2A6349]" />
               <div>
                 <div className="text-sm text-gray-600">AI Edits</div>
                 <div className="text-xl font-bold text-gray-900">3</div>
