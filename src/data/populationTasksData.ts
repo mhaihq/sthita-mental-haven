@@ -39,6 +39,18 @@ export const populationTasksData: PopulationTask[] = [
     taskType: 'Administrative'
   },
   {
+    id: 'T008',
+    title: 'Annual Physical Assessment',
+    patientName: 'Sthita Pujari',
+    patientId: 'P100592',
+    description: 'Complete comprehensive annual physical examination',
+    priority: 'Medium',
+    estimatedTime: '30 min',
+    status: 'needs-review',
+    dueDate: '2023-05-25',
+    taskType: 'Clinical Assessment'
+  },
+  {
     id: 'T003',
     title: 'Crisis Assessment',
     patientName: 'Maria Rodriguez',

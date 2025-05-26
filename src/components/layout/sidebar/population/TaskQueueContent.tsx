@@ -126,9 +126,9 @@ export const TaskQueueContent: React.FC = () => {
 
   // Categorize tasks into bins based on status
   const taskBins = {
-    'Needs review': filteredTasks.filter(task => task.status === 'pending-review'),
+    'Needs review': filteredTasks.filter(task => task.status === 'needs-review'),
     'In progress': filteredTasks.filter(task => task.status === 'in-progress'),
-    'Needs QHP': filteredTasks.filter(task => task.status === 'needs-approval'),
+    'Needs QHP': filteredTasks.filter(task => task.status === 'needs-qhp'),
     'Completed': filteredTasks.filter(task => task.status === 'completed')
   };
 
