@@ -13,7 +13,6 @@ import {
   Brain, CalendarCheck, ClockAlert, Heart, MessageCircle
 } from 'lucide-react';
 import HanaSidebar from '@/components/layout/HanaSidebar';
-import PopulationSidebar from '@/components/layout/PopulationSidebar';
 
 const PatientDetail = () => {
   const { patientId } = useParams();
@@ -55,8 +54,6 @@ const PatientDetail = () => {
             </Button>
           </div>
         </main>
-
-        <PopulationSidebar />
       </div>
     );
   }
@@ -157,7 +154,6 @@ const PatientDetail = () => {
       </main>
 
       <HanaSidebar />
-      <PopulationSidebar />
       
       <style>
         {`
