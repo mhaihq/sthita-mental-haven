@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -28,14 +29,6 @@ const PatientDetail = () => {
           <div className="container py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => navigate('/')}
-                  className="flex items-center gap-2"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Patients
-                </Button>
                 <h1 className="text-2xl font-bold text-primary">CareHealth EHR</h1>
               </div>
             </div>
@@ -43,6 +36,15 @@ const PatientDetail = () => {
         </header>
         
         <main className="container py-6">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 mb-6"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Patients
+          </Button>
+          
           <div className="text-center py-12">
             <h2 className="text-2xl font-bold mb-4">Patient Record Not Available</h2>
             <p className="text-muted-foreground mb-6">
@@ -63,14 +65,6 @@ const PatientDetail = () => {
         <div className="container py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <Button 
-                variant="ghost" 
-                onClick={() => navigate('/')}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back to Patients
-              </Button>
               <h1 className="text-2xl font-bold text-primary">CareHealth EHR</h1>
             </div>
           </div>
@@ -78,6 +72,15 @@ const PatientDetail = () => {
       </header>
       
       <main className="container py-6">
+        <Button 
+          variant="ghost" 
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 mb-6"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Patients
+        </Button>
+        
         <PatientHeader patient={patientData} />
         
         <Tabs defaultValue="overview" className="w-full">
