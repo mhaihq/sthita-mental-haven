@@ -8,44 +8,44 @@ import { patientData } from '@/data/patientData';
 import { PriorityTaskItem } from './PriorityTaskItem';
 import { ArrowUpRight, FileText as FileTextIcon } from '@/components/SidebarIcons';
 
-// Updated priority tasks to match population level tasks for Sthita Pujari
+// Updated priority tasks to match Hana-triggered population level tasks for Sthita Pujari
 const priorityTasks = [
   {
-    id: 'T001',
-    title: 'Medication Reconciliation',
-    description: 'Review and update current medications list',
-    dueDate: '2023-05-23',
+    id: 'T-1001',
+    title: 'PHQ-9 Score Increased',
+    description: 'Score increased from 8 to 13 during Hana call',
+    dueDate: '2025-05-27',
     status: 'Needs Review',
     statusColor: 'red',
     icon: <ArrowUpRight className="text-red-500" size={18} />
   },
   {
-    id: 'T008',
-    title: 'Annual Physical Assessment',
-    description: 'Complete comprehensive annual physical examination',
-    dueDate: '2023-05-25',
+    id: 'T-1002',
+    title: 'Missed Medications This Week', 
+    description: '2 doses of Sertraline missed (May 23-24)',
+    dueDate: '2025-05-27',
     status: 'Needs Review',
     statusColor: 'red',
     icon: <FileTextIcon className="text-red-500" size={18} />
   },
   {
-    id: 'T009',
-    title: 'Therapy Session Follow-up',
-    description: 'Follow up on recent therapy session and medication adjustments',
-    dueDate: '2023-05-23',
+    id: 'T-1003',
+    title: 'Sleep Pattern Disruption',
+    description: 'Waking up 3-4 times per night, affecting daily function',
+    dueDate: '2025-05-28',
     status: 'Needs Review',
-    statusColor: 'red',
-    icon: <ArrowUpRight className="text-red-500" size={18} />
+    statusColor: 'yellow',
+    icon: <ArrowUpRight className="text-yellow-500" size={18} />
   }
 ];
 
-// Calculate time since last call
+// Calculate time since last Hana call
 const getTimeSinceLastCall = (): string => {
-  // In a real app, this would use actual timestamp data
-  const lastCallDate = new Date();
-  lastCallDate.setDate(lastCallDate.getDate() - 2); // 2 days ago
+  // Last Hana call was May 25, 2025
+  const lastCallDate = new Date('2025-05-25');
+  const today = new Date('2025-05-26'); // Current date
   
-  const diffInHours = Math.floor((new Date().getTime() - lastCallDate.getTime()) / (1000 * 60 * 60));
+  const diffInHours = Math.floor((today.getTime() - lastCallDate.getTime()) / (1000 * 60 * 60));
   
   if (diffInHours < 24) {
     return `${diffInHours}h ago`;
@@ -66,7 +66,7 @@ export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTask
       <section>
         <h3 className="font-medium text-gray-900 mb-4 flex items-center">
           <FileTextIcon className="mr-2 text-[#1E4D36]" size={18} />
-          Priority Tasks
+          Priority Tasks (Hana-Triggered)
         </h3>
         
         <div className="space-y-4">
@@ -80,30 +80,30 @@ export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTask
         </div>
       </section>
 
-      {/* Engagement - Enhanced version */}
+      {/* Engagement - Enhanced version with Hana-specific data */}
       <section>
         <h3 className="font-medium text-gray-900 mb-4 flex items-center">
           <MessageCircle className="mr-2 text-[#1E4D36]" size={18} />
-          Patient Engagement
+          Hana AI Coach Engagement
         </h3>
         <Card className="bg-white border-none shadow-sm rounded-lg overflow-hidden">
           <div className="bg-[#1E4D36] px-4 py-3">
             <div className="flex justify-between items-center">
-              <h4 className="text-white font-medium">AI Conversation History</h4>
+              <h4 className="text-white font-medium">Hana Call History</h4>
               <Badge className="bg-green-100 text-green-700">
-                Data from {getTimeSinceLastCall()}
+                Last call: {getTimeSinceLastCall()}
               </Badge>
             </div>
           </div>
           <CardContent className="p-4">
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div className="text-center p-2 bg-[#F8F8F8] rounded-lg">
-                <p className="text-sm text-gray-600">Calls this month</p>
-                <p className="text-xl font-medium text-[#1E4D36]">4</p>
+                <p className="text-sm text-gray-600">Calls this week</p>
+                <p className="text-xl font-medium text-[#1E4D36]">3</p>
               </div>
               <div className="text-center p-2 bg-[#F8F8F8] rounded-lg">
                 <p className="text-sm text-gray-600">Avg. Duration</p>
-                <p className="text-xl font-medium text-[#1E4D36]">12 min</p>
+                <p className="text-xl font-medium text-[#1E4D36]">14 min</p>
               </div>
               <div className="text-center p-2 bg-[#F8F8F8] rounded-lg">
                 <p className="text-sm text-gray-600">Engagement</p>
@@ -112,39 +112,39 @@ export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTask
             </div>
             
             <div className="mb-4">
-              <h5 className="text-sm font-medium text-gray-700 mb-2">Conversation Topics</h5>
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Recent Call Topics</h5>
               <div className="flex flex-wrap gap-2">
-                <Badge className="bg-blue-50 text-blue-700 border-blue-100">Medication</Badge>
-                <Badge className="bg-purple-50 text-purple-700 border-purple-100">Sleep</Badge>
-                <Badge className="bg-pink-50 text-pink-700 border-pink-100">Stress</Badge>
-                <Badge className="bg-yellow-50 text-yellow-700 border-yellow-100">Work</Badge>
+                <Badge className="bg-red-50 text-red-700 border-red-100">PHQ-9 Increase</Badge>
+                <Badge className="bg-yellow-50 text-yellow-700 border-yellow-100">Medication Adherence</Badge>
+                <Badge className="bg-blue-50 text-blue-700 border-blue-100">Sleep Issues</Badge>
+                <Badge className="bg-orange-50 text-orange-700 border-orange-100">Work Stress</Badge>
               </div>
             </div>
             
             <div className="mb-4">
-              <h5 className="text-sm font-medium text-gray-700 mb-2">Key Insights</h5>
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Hana's Key Insights</h5>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li className="flex items-start">
                   <span className="text-[#1E4D36] mr-2">•</span>
-                  Reports feeling better after medication adjustment
+                  Mood decline correlates with medication non-adherence
                 </li>
                 <li className="flex items-start">
                   <span className="text-[#1E4D36] mr-2">•</span>
-                  Expressed concerns about side effects
+                  Sleep disruption worsening since work project started
                 </li>
                 <li className="flex items-start">
                   <span className="text-[#1E4D36] mr-2">•</span>
-                  Mentioned upcoming work deadline causing stress
+                  Patient responsive to check-ins, values Hana support
                 </li>
               </ul>
             </div>
             
             <div>
-              <h5 className="text-sm font-medium text-gray-700 mb-2">Flags</h5>
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Risk Flags</h5>
               <Alert className="bg-amber-50 border-amber-200 py-2">
                 <AlertTitle className="text-amber-800 text-sm font-medium">Attention Needed</AlertTitle>
                 <AlertDescription className="text-amber-700 text-xs mt-1">
-                  Mentioned feeling overwhelmed at work
+                  PHQ-9 increase + medication non-adherence pattern detected
                 </AlertDescription>
               </Alert>
             </div>
@@ -206,24 +206,24 @@ export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTask
       <section>
         <h3 className="font-medium text-gray-900 mb-4 flex items-center">
           <CalendarDays className="mr-2 text-[#1E4D36]" size={18} />
-          Upcoming Appointments
+          Upcoming Schedule
         </h3>
         <Card className="bg-white border-none shadow-sm rounded-lg overflow-hidden">
           <CardContent className="p-4">
             <div className="flex items-center justify-between p-2 border-b">
               <div>
-                <h4 className="font-medium text-gray-900">Follow-up: Dr. Chen</h4>
-                <p className="text-sm text-gray-600">Mon, Apr 15 • 3:00 PM</p>
+                <h4 className="font-medium text-gray-900">Next Hana Call</h4>
+                <p className="text-sm text-gray-600">Mon, May 28 • 2:00 PM</p>
               </div>
-              <Badge className="bg-blue-100 text-blue-700">Virtual</Badge>
+              <Badge className="bg-green-100 text-green-700">Scheduled</Badge>
             </div>
             
             <div className="flex items-center justify-between p-2">
               <div>
-                <h4 className="font-medium text-gray-900">Blood Pressure Check</h4>
-                <p className="text-sm text-gray-600">Wed, Apr 24 • 10:30 AM</p>
+                <h4 className="font-medium text-gray-900">Follow-up: Dr. Chen</h4>
+                <p className="text-sm text-gray-600">Wed, May 30 • 3:00 PM</p>
               </div>
-              <Badge className="bg-purple-100 text-purple-700">In-person</Badge>
+              <Badge className="bg-blue-100 text-blue-700">Virtual</Badge>
             </div>
           </CardContent>
         </Card>

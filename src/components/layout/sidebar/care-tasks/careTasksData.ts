@@ -15,37 +15,37 @@ export const cptCodeInfo: Record<string, CptCodeInfo> = {
   }
 };
 
-// Task data grouped by CPT codes
+// Task data grouped by CPT codes - matching population tasks for Sthita Pujari
 export const careTasksData: CptCodeData = {
   '99490': [
     {
       id: 'T-1002',
       title: 'Missed Medications This Week',
-      description: '2 doses of Lisinopril missed (Apr 3-4)',
+      description: '2 doses of Sertraline missed (May 23-24)',
       category: 'Medication',
       categoryColor: 'yellow',
-      minutes: 5,
-      insight: 'Flagged by Adherence Agent — 11% drop in last 30 days',
-      status: 'assigned'
+      minutes: 4,
+      insight: 'Flagged by Hana AI Coach during May 25 call - adherence drop affecting mood stability',
+      status: 'urgent'
     },
     {
-      id: 'T-1004', 
-      title: 'Blood Pressure Follow-up',
-      description: 'BP reading 138/88 on Apr 5',
+      id: 'T-1003', 
+      title: 'Sleep Pattern Disruption',
+      description: 'Waking up 3-4 times per night, affecting daily function',
       category: 'Vitals',
       categoryColor: 'blue',
-      minutes: 5,
-      insight: 'Mild elevation from baseline (120/80)',
+      minutes: 3,
+      insight: 'Reported during Hana call on May 24 - possible medication timing issue',
       status: 'pending'
     },
     {
-      id: 'T-1005',
-      title: 'Social Determinants Assessment',
-      description: 'Quarterly SDOH check-in',
+      id: 'T-1004',
+      title: 'Work Stress Escalation',
+      description: 'Feeling overwhelmed with upcoming deadline stress',
       category: 'Assessment',
       categoryColor: 'green',
-      minutes: 10,
-      insight: 'Previously flagged transportation issues',
+      minutes: 6,
+      insight: 'Mentioned during Hana call - potential trigger for mood deterioration',
       status: 'pending'
     }
   ],
@@ -56,19 +56,9 @@ export const careTasksData: CptCodeData = {
       description: 'Score increased from 8 to 13',
       category: 'Mental-health',
       categoryColor: 'pink',
-      minutes: 10,
-      insight: 'Flagged by AI from Apr 3 call — mentions job stress',
-      status: 'urgent'
-    },
-    {
-      id: 'T-1003',
-      title: 'Sleep Pattern Changes',
-      description: 'Reported difficulty staying asleep',
-      category: 'Mental-health',
-      categoryColor: 'purple',
       minutes: 5,
-      insight: 'Mentioned in last AI call, possible side effect',
-      status: 'assigned'
+      insight: 'Flagged by Hana AI Coach during May 25 call - significant mood decline detected',
+      status: 'urgent'
     }
   ]
 };
