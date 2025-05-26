@@ -9,9 +9,16 @@ interface CareTasksGroupProps {
   title: string;
   tasks: CareTask[];
   onTaskClick: (taskId: string) => void;
+  onTaskDetailClick?: (taskId: string) => void;
 }
 
-export const CareTasksGroup: React.FC<CareTasksGroupProps> = ({ cptCode, title, tasks, onTaskClick }) => {
+export const CareTasksGroup: React.FC<CareTasksGroupProps> = ({ 
+  cptCode, 
+  title, 
+  tasks, 
+  onTaskClick, 
+  onTaskDetailClick 
+}) => {
   const badgeColor = cptCode === '99490' ? "bg-blue-50 text-blue-700 border-blue-100" : "bg-purple-50 text-purple-700 border-purple-100";
   
   return (
@@ -29,6 +36,7 @@ export const CareTasksGroup: React.FC<CareTasksGroupProps> = ({ cptCode, title, 
             key={task.id} 
             task={task}
             onClick={() => onTaskClick(task.id)}
+            onDetailClick={onTaskDetailClick}
           />
         ))}
       </div>
