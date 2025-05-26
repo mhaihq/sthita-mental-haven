@@ -107,6 +107,7 @@ const CareTaskDetail = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [riskApproved, setRiskApproved] = useState<boolean | null>(null);
+  const [evidenceStatuses, setEvidenceStatuses] = useState<Record<string, 'pending' | 'saved' | 'rejected'>>({});
 
   // Mock data fetching
   useEffect(() => {
@@ -167,13 +168,29 @@ const CareTaskDetail = () => {
     }
   };
 
+  // Evidence handling functions
+  const handleEvidenceAction = (evidenceIndex: number, action: 'save' | 'reject') => {
+    setEvidenceStatuses(prev => ({
+      ...prev,
+      [evidenceIndex]: action === 'save' ? 'saved' : 'rejected'
+    }));
+
+    toast({
+      title: action === 'save' ? "Evidence Saved" : "Evidence Rejected",
+      description: `Evidence piece ${evidenceIndex + 1} has been ${action === 'save' ? 'saved to log' : 'rejected'}.`,
+      variant: action === 'save' ? "default" : "destructive"
+    });
+  };
+
   // Risk assessment handlers
   const handleRiskApproval = (approved: boolean) => {
     setRiskApproved(approved);
+    const savedCount = Object.values(evidenceStatuses).filter(status => status === 'saved').length;
+    
     toast({
       title: approved ? "Risk Approved" : "Risk Denied",
       description: approved 
-        ? "The risk assessment has been approved and added to the patient record." 
+        ? `The risk assessment has been approved with ${savedCount} evidence pieces.` 
         : "The risk assessment has been marked as not applicable.",
       variant: approved ? "default" : "destructive"
     });
@@ -300,6 +317,8 @@ const CareTaskDetail = () => {
                 riskApproved={riskApproved}
                 onRiskDecision={handleRiskApproval}
                 onShowAudio={() => setShowAudioDialog(true)}
+                evidenceStatuses={evidenceStatuses}
+                onEvidenceAction={handleEvidenceAction}
               />
               {riskApproved === false && (
                 <div className="text-center py-8">
