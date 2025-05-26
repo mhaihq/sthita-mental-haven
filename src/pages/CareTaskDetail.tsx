@@ -108,6 +108,12 @@ const CareTaskDetail = () => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [riskApproved, setRiskApproved] = useState<boolean | null>(null);
   const [evidenceStatuses, setEvidenceStatuses] = useState<Record<string, 'pending' | 'saved' | 'rejected'>>({});
+  const [soapNote, setSoapNote] = useState({
+    subjective: '',
+    objective: '',
+    assessment: '',
+    plan: ''
+  });
 
   // Mock data fetching
   useEffect(() => {
@@ -121,6 +127,15 @@ const CareTaskDetail = () => {
         .map(action => action.id);
       
       setSelectedActions(initialSelectedActions);
+      
+      // Generate initial SOAP note based on evidence
+      const evidenceText = taskData.evidenceFromCall.map(e => e.text).join('. ');
+      setSoapNote({
+        subjective: `Patient reports: ${evidenceText}`,
+        objective: `PHQ-9 score increased from 8 to 13. Patient accessed via telehealth call on ${new Date().toLocaleDateString()}.`,
+        assessment: `${taskData.title} - ${taskData.description}. ${taskData.flagReason}`,
+        plan: 'Schedule follow-up call with behavioral health specialist. Review current medication regimen. Provide stress management resources. Monitor sleep patterns and energy levels.'
+      });
       
       // Generate initial summary
       const actionTexts = taskData.suggestedActions
@@ -180,6 +195,14 @@ const CareTaskDetail = () => {
       description: `Evidence piece ${evidenceIndex + 1} has been ${action === 'save' ? 'saved to log' : 'rejected'}.`,
       variant: action === 'save' ? "default" : "destructive"
     });
+  };
+
+  // SOAP note handler
+  const handleSoapNoteChange = (section: string, value: string) => {
+    setSoapNote(prev => ({
+      ...prev,
+      [section]: value
+    }));
   };
 
   // Risk assessment handlers
@@ -340,6 +363,8 @@ const CareTaskDetail = () => {
                 onManualActionChange={setManualAction}
                 onAddManualAction={handleAddManualAction}
                 onSummaryChange={setSummary}
+                soapNote={soapNote}
+                onSoapNoteChange={handleSoapNoteChange}
               />
               <div className="flex justify-end">
                 <Button onClick={nextStep}>Next: Follow-up Plan</Button>
