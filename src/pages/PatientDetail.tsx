@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +13,7 @@ import {
   Brain, CalendarCheck, ClockAlert, Heart, MessageCircle
 } from 'lucide-react';
 import HanaSidebar from '@/components/layout/HanaSidebar';
+import PopulationSidebar from '@/components/layout/PopulationSidebar';
 
 const PatientDetail = () => {
   const { patientId } = useParams();
@@ -55,6 +55,8 @@ const PatientDetail = () => {
             </Button>
           </div>
         </main>
+
+        <PopulationSidebar />
       </div>
     );
   }
@@ -155,6 +157,7 @@ const PatientDetail = () => {
       </main>
 
       <HanaSidebar />
+      <PopulationSidebar />
       
       <style>
         {`
