@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, Users } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { PopulationSidebarTabs } from './sidebar/PopulationSidebarTabs';
 import { TaskQueueContent } from './sidebar/population/TaskQueueContent';
@@ -17,23 +17,31 @@ export const PopulationSidebar = () => {
     <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
       <SheetTrigger asChild>
         <button 
-          className="flex items-center justify-center w-10 h-10 bg-[#2A6349] rounded-full shadow-lg hover:bg-[#1E4D36] transition-colors pulse-animation fixed right-4 top-36 z-50"
+          className="flex items-center justify-center w-10 h-10 bg-[#1E4D36] rounded-full shadow-lg hover:bg-[#2A6349] transition-colors pulse-animation fixed right-4 top-20 z-50"
           aria-label="Open Population Health sidebar"
         >
-          <Users className="h-5 w-5 text-white" />
+          <img 
+            src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
+            alt="Hana Clinic Logo" 
+            className="h-6 w-6 object-contain"
+          />
         </button>
       </SheetTrigger>
       
       <SheetContent className="p-0 max-w-2/3 w-2/3 border-l border-gray-200 overflow-y-auto bg-[#F1F1F1]">
         <div className="flex flex-col h-full">
-          {/* Sidebar Header */}
+          {/* Sidebar Header with Hana Compass branding */}
           <div className="relative bg-white shadow-sm">
             <div className="relative z-10 flex items-center justify-between p-6">
               <div className="flex items-center gap-3">
-                <Users className="h-8 w-8 text-[#1E4D36]" />
+                <img 
+                  src="/lovable-uploads/8bd12f77-f027-47b9-a41c-a780b6ec54d0.png" 
+                  alt="Hana Clinic Logo" 
+                  className="h-14 w-auto"
+                />
                 <div>
-                  <h2 className="text-2xl font-bold text-[#1E4D36]">Population Health</h2>
-                  <p className="text-sm text-[#2A6349]">Multi-Patient Management</p>
+                  <h2 className="text-2xl font-bold text-[#1E4D36]">Hana Compass</h2>
+                  <p className="text-sm text-[#2A6349]">Population Health Assistant</p>
                 </div>
               </div>
               <button 
@@ -81,7 +89,7 @@ export const PopulationSidebar = () => {
           {/* Footer */}
           <div className="bg-white shadow-sm p-4 border-t border-gray-200">
             <p className="text-xs text-gray-500 text-center">
-              Population Health • 5 Active Patients • Last updated: 2 hours ago
+              Hana Compass • Population Health • 5 Active Patients • Last updated: 2 hours ago
             </p>
           </div>
         </div>

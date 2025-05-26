@@ -1,12 +1,17 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Clock, User, ArrowRight } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Clock, User, ArrowRight, Search, Filter } from 'lucide-react';
 import { populationTasksData, PopulationTask } from '@/data/populationTasksData';
+import { useNavigate } from 'react-router-dom';
 
-const TaskCard: React.FC<{ task: PopulationTask }> = ({ task }) => {
+const TaskRow: React.FC<{ task: PopulationTask }> = ({ task }) => {
+  const navigate = useNavigate();
+  
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'High': return 'bg-red-100 text-red-800 border-red-200';
@@ -16,99 +21,152 @@ const TaskCard: React.FC<{ task: PopulationTask }> = ({ task }) => {
     }
   };
 
+  const handleTakeAction = () => {
+    if (task.patientId === 'P100592') {
+      navigate(`/patient/${task.patientId}`);
+    }
+  };
+
   return (
-    <Card className="mb-3 hover:shadow-md transition-shadow">
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-sm font-medium text-[#1E4D36]">
-            {task.title}
-          </CardTitle>
-          <Badge className={`text-xs ${getPriorityColor(task.priority)}`}>
-            {task.priority}
-          </Badge>
+    <tr className="border-b hover:bg-gray-50 transition-colors">
+      <td className="p-3">
+        <div className="space-y-1">
+          <div className="font-medium text-sm text-[#1E4D36]">{task.title}</div>
+          <div className="text-xs text-gray-600">{task.description}</div>
         </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="space-y-2">
-          <div className="flex items-center gap-1 text-xs text-gray-600">
-            <User size={12} />
-            <span>{task.patientName}</span>
-          </div>
-          <p className="text-xs text-gray-700 line-clamp-2">{task.description}</p>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-xs text-gray-500">
-              <Clock size={12} />
-              <span>{task.estimatedTime}</span>
-            </div>
-            <Button size="sm" className="h-6 px-2 text-xs bg-[#1E4D36] hover:bg-[#2A6349]">
-              <ArrowRight size={12} className="mr-1" />
-              Take Action
-            </Button>
-          </div>
-          {task.assignedTo && (
-            <p className="text-xs text-blue-600">Assigned to: {task.assignedTo}</p>
-          )}
+      </td>
+      <td className="p-3">
+        <div className="text-sm text-gray-700">{task.patientName}</div>
+        <div className="text-xs text-gray-500">ID: {task.patientId}</div>
+      </td>
+      <td className="p-3">
+        <Badge className={`text-xs ${getPriorityColor(task.priority)}`}>
+          {task.priority}
+        </Badge>
+      </td>
+      <td className="p-3">
+        <div className="flex items-center gap-1 text-xs text-gray-500">
+          <Clock size={12} />
+          <span>{task.estimatedTime}</span>
         </div>
-      </CardContent>
-    </Card>
+      </td>
+      <td className="p-3">
+        <Badge variant="outline" className="text-xs">
+          {task.status.replace('-', ' ')}
+        </Badge>
+      </td>
+      <td className="p-3">
+        <div className="text-xs text-gray-600">{task.dueDate}</div>
+      </td>
+      <td className="p-3">
+        <Button 
+          size="sm" 
+          className="h-6 px-2 text-xs bg-[#1E4D36] hover:bg-[#2A6349]"
+          onClick={handleTakeAction}
+        >
+          <ArrowRight size={12} className="mr-1" />
+          Take Action
+        </Button>
+      </td>
+    </tr>
   );
 };
 
-const TaskColumn: React.FC<{ title: string; tasks: PopulationTask[]; count: number }> = ({ title, tasks, count }) => (
-  <div className="flex-1 min-w-0">
-    <div className="bg-gray-50 p-3 rounded-t-lg border-b">
-      <h3 className="font-medium text-sm text-[#1E4D36] flex items-center justify-between">
-        {title}
-        <Badge variant="secondary" className="text-xs">{count}</Badge>
-      </h3>
-    </div>
-    <div className="p-3 max-h-96 overflow-y-auto medical-scrollbar">
-      {tasks.map(task => (
-        <TaskCard key={task.id} task={task} />
-      ))}
-      {tasks.length === 0 && (
-        <p className="text-xs text-gray-500 text-center py-4">No tasks</p>
-      )}
-    </div>
-  </div>
-);
-
 export const TaskQueueContent: React.FC = () => {
-  const needsReviewTasks = populationTasksData.filter(task => task.status === 'needs-review');
-  const inProgressTasks = populationTasksData.filter(task => task.status === 'in-progress');
-  const needsQhpTasks = populationTasksData.filter(task => task.status === 'needs-qhp');
-  const completedTasks = populationTasksData.filter(task => task.status === 'completed');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [priorityFilter, setPriorityFilter] = useState('all');
+  const [timeFilter, setTimeFilter] = useState('all');
+
+  const filteredTasks = populationTasksData.filter(task => {
+    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         task.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         task.description.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesPriority = priorityFilter === 'all' || task.priority === priorityFilter;
+    
+    const matchesTime = timeFilter === 'all' || 
+      (timeFilter === 'overdue' && new Date(task.dueDate) < new Date()) ||
+      (timeFilter === 'today' && task.dueDate === new Date().toISOString().split('T')[0]) ||
+      (timeFilter === 'week' && new Date(task.dueDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
+    
+    return matchesSearch && matchesPriority && matchesTime;
+  });
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-[#1E4D36]">Population Task Queue</h2>
         <Badge variant="outline" className="text-xs">
-          {populationTasksData.length} Total Tasks
+          {filteredTasks.length} of {populationTasksData.length} Tasks
         </Badge>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
-        <TaskColumn 
-          title="Needs Review" 
-          tasks={needsReviewTasks} 
-          count={needsReviewTasks.length}
-        />
-        <TaskColumn 
-          title="In Progress" 
-          tasks={inProgressTasks} 
-          count={inProgressTasks.length}
-        />
-        <TaskColumn 
-          title="Needs QHP" 
-          tasks={needsQhpTasks} 
-          count={needsQhpTasks.length}
-        />
-        <TaskColumn 
-          title="Completed" 
-          tasks={completedTasks} 
-          count={completedTasks.length}
-        />
+      {/* Search and Filters */}
+      <div className="space-y-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input
+            placeholder="Search tasks, patients, or descriptions..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9 text-sm"
+          />
+        </div>
+        
+        <div className="flex gap-2">
+          <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+            <SelectTrigger className="w-32 text-xs">
+              <SelectValue placeholder="Priority" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Priority</SelectItem>
+              <SelectItem value="High">High</SelectItem>
+              <SelectItem value="Medium">Medium</SelectItem>
+              <SelectItem value="Low">Low</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Select value={timeFilter} onValueChange={setTimeFilter}>
+            <SelectTrigger className="w-32 text-xs">
+              <SelectValue placeholder="Due Date" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Time</SelectItem>
+              <SelectItem value="overdue">Overdue</SelectItem>
+              <SelectItem value="today">Due Today</SelectItem>
+              <SelectItem value="week">This Week</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      
+      {/* Tasks Table */}
+      <div className="bg-white rounded-lg border overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="text-left p-3 text-xs font-medium text-gray-500 uppercase">Task</th>
+              <th className="text-left p-3 text-xs font-medium text-gray-500 uppercase">Patient</th>
+              <th className="text-left p-3 text-xs font-medium text-gray-500 uppercase">Priority</th>
+              <th className="text-left p-3 text-xs font-medium text-gray-500 uppercase">Time</th>
+              <th className="text-left p-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="text-left p-3 text-xs font-medium text-gray-500 uppercase">Due Date</th>
+              <th className="text-left p-3 text-xs font-medium text-gray-500 uppercase">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTasks.map(task => (
+              <TaskRow key={task.id} task={task} />
+            ))}
+          </tbody>
+        </table>
+        
+        {filteredTasks.length === 0 && (
+          <div className="p-8 text-center text-gray-500">
+            <Filter className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+            <p>No tasks match your current filters</p>
+          </div>
+        )}
       </div>
     </div>
   );

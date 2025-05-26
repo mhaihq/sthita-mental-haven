@@ -5,8 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, User, AlertTriangle, Eye } from 'lucide-react';
 import { patientsData } from '@/data/patientsData';
+import { useNavigate } from 'react-router-dom';
 
 const PatientCard: React.FC<{ patient: typeof patientsData[0] }> = ({ patient }) => {
+  const navigate = useNavigate();
+  
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'Severe': return 'bg-red-100 text-red-800 border-red-200';
@@ -27,6 +30,16 @@ const PatientCard: React.FC<{ patient: typeof patientsData[0] }> = ({ patient })
     }
     
     return age;
+  };
+
+  const handleViewDetails = () => {
+    if (patient.isClickable) {
+      navigate(`/patient/${patient.id}`);
+    }
+  };
+
+  const handleQuickAction = () => {
+    navigate(`/patient/${patient.id}`);
   };
 
   return (
@@ -70,6 +83,7 @@ const PatientCard: React.FC<{ patient: typeof patientsData[0] }> = ({ patient })
               size="sm" 
               variant="outline" 
               className="h-6 px-2 text-xs flex-1"
+              onClick={handleViewDetails}
               disabled={!patient.isClickable}
             >
               <Eye size={12} className="mr-1" />
@@ -78,6 +92,7 @@ const PatientCard: React.FC<{ patient: typeof patientsData[0] }> = ({ patient })
             <Button 
               size="sm" 
               className="h-6 px-2 text-xs bg-[#1E4D36] hover:bg-[#2A6349]"
+              onClick={handleQuickAction}
             >
               <AlertTriangle size={12} className="mr-1" />
               Quick Action

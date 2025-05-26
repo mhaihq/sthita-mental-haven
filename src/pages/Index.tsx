@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { patientsData } from '@/data/patientsData';
 import PatientListView from '@/components/PatientListView';
+import PopulationSidebar from '@/components/layout/PopulationSidebar';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -29,6 +30,28 @@ const Index = () => {
           onPatientClick={handlePatientClick}
         />
       </main>
+
+      <PopulationSidebar />
+      
+      <style>
+        {`
+        @keyframes pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(30, 77, 54, 0.7);
+          }
+          70% {
+            box-shadow: 0 0 0 10px rgba(30, 77, 54, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(30, 77, 54, 0);
+          }
+        }
+        
+        .pulse-animation {
+          animation: pulse 2s infinite;
+        }
+        `}
+      </style>
     </div>
   );
 };
