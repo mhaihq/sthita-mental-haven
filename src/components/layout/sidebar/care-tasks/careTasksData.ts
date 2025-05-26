@@ -69,66 +69,6 @@ export const careTasksData: CptCodeData = {
       minutes: 5,
       insight: 'Mentioned in last AI call, possible side effect',
       status: 'assigned'
-    },
-    {
-      id: 'T-1006',
-      title: 'GAD-7 Anxiety Assessment Due',
-      description: 'Quarterly anxiety screening overdue',
-      category: 'Mental-health',
-      categoryColor: 'orange',
-      minutes: 8,
-      insight: 'Last score was 12 (moderate anxiety), trending upward',
-      status: 'pending'
-    },
-    {
-      id: 'T-1007',
-      title: 'Medication Adherence Check',
-      description: 'Sertraline compliance review needed',
-      category: 'Mental-health',
-      categoryColor: 'blue',
-      minutes: 7,
-      insight: 'Patient mentioned forgetting weekend doses in last call',
-      status: 'assigned'
-    },
-    {
-      id: 'T-1008',
-      title: 'Crisis Safety Plan Update',
-      description: 'Emergency contacts need verification',
-      category: 'Mental-health',
-      categoryColor: 'red',
-      minutes: 12,
-      insight: 'Recent life changes require plan adjustment',
-      status: 'urgent'
-    },
-    {
-      id: 'T-1009',
-      title: 'Therapy Session Coordination',
-      description: 'Schedule follow-up with therapist',
-      category: 'Mental-health',
-      categoryColor: 'green',
-      minutes: 6,
-      insight: 'Patient expressed interest in increasing session frequency',
-      status: 'pending'
-    },
-    {
-      id: 'T-1010',
-      title: 'Substance Use Screening',
-      description: 'AUDIT-C screening due for renewal',
-      category: 'Mental-health',
-      categoryColor: 'yellow',
-      minutes: 9,
-      insight: 'Previous screening showed moderate risk patterns',
-      status: 'assigned'
-    },
-    {
-      id: 'T-1011',
-      title: 'Social Support Assessment',
-      description: 'Evaluate current support network',
-      category: 'Mental-health',
-      categoryColor: 'teal',
-      minutes: 11,
-      insight: 'Recent isolation concerns noted in documentation',
-      status: 'pending'
     }
   ]
 };

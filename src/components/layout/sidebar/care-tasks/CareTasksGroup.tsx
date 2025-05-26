@@ -15,7 +15,7 @@ export const CareTasksGroup: React.FC<CareTasksGroupProps> = ({ cptCode, title, 
   const badgeColor = cptCode === '99490' ? "bg-blue-50 text-blue-700 border-blue-100" : "bg-purple-50 text-purple-700 border-purple-100";
   
   return (
-    <div className="border-2 border-gray-600 rounded-lg p-4">
+    <div>
       <h4 className="font-medium text-lg text-gray-900 mb-3 flex items-center">
         <Badge className={`${badgeColor} mr-2 font-mono`}>
           {cptCode}
