@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Eye, Search } from 'lucide-react';
+import { Eye, Search, Filter } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { patientsData } from '@/data/patientsData';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 export const PatientsListContent: React.FC = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ export const PatientsListContent: React.FC = () => {
         </Badge>
       </div>
 
-      {/* Risk Counters - Moved to top */}
+      {/* Risk Counters */}
       <div className="grid grid-cols-3 gap-2 p-3 bg-white rounded-lg border">
         <div className="text-center">
           <p className="text-xs text-gray-500">High Risk</p>
@@ -85,8 +86,8 @@ export const PatientsListContent: React.FC = () => {
       </div>
 
       {/* Search and Filter Controls */}
-      <div className="space-y-2">
-        <div className="relative">
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
           <Search size={14} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <Input
             placeholder="Search patients..."
@@ -96,17 +97,29 @@ export const PatientsListContent: React.FC = () => {
           />
         </div>
         
-        <Select value={severityFilter} onValueChange={setSeverityFilter}>
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue placeholder="Filter by severity" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Severities</SelectItem>
-            <SelectItem value="Severe">High Risk</SelectItem>
-            <SelectItem value="Moderate">Medium Risk</SelectItem>
-            <SelectItem value="Mild">Low Risk</SelectItem>
-          </SelectContent>
-        </Select>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className="h-8 px-2">
+              <Filter size={14} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-48 p-2" align="end">
+            <div className="space-y-2">
+              <p className="text-xs font-medium">Filter by Severity</p>
+              <Select value={severityFilter} onValueChange={setSeverityFilter}>
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue placeholder="All Severities" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Severities</SelectItem>
+                  <SelectItem value="Severe">High Risk</SelectItem>
+                  <SelectItem value="Moderate">Medium Risk</SelectItem>
+                  <SelectItem value="Mild">Low Risk</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
       
       <div className="border rounded-lg overflow-hidden">
@@ -127,7 +140,11 @@ export const PatientsListContent: React.FC = () => {
                   <div>
                     <p className="font-bold text-xs text-[#1E4D36]">{patient.name}</p>
                     <p className="text-xs text-gray-500">ID: {patient.id}</p>
-                    <p className="text-xs text-gray-600 mt-1">{patient.primaryDiagnosis}</p>
+                    <div className="mt-1">
+                      <Badge className="text-xs bg-gray-100 text-gray-700 border-gray-200">
+                        {patient.primaryDiagnosis}
+                      </Badge>
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="py-2">
