@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import PatientDetail from "./pages/PatientDetail";
 import NotFound from "./pages/NotFound";
 import CareTaskDetail from "./pages/CareTaskDetail";
+import TimeTracking from "./pages/TimeTracking";
 
 // Define Hana colors
 const hanaColors = {
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/patient/:patientId" element={<PatientDetail />} />
           <Route path="/care-task/:taskId" element={<CareTaskDetail />} />
+          <Route path="/time-tracking/:taskId" element={<TimeTracking />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
