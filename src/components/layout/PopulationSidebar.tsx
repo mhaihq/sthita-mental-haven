@@ -8,16 +8,22 @@ import { PatientsListContent } from './sidebar/population/PatientsListContent';
 import { CampaignsContent } from './sidebar/population/CampaignsContent';
 import { BillingContent } from './sidebar/population/BillingContent';
 import { InsightsContent } from './sidebar/population/InsightsContent';
+import { useLocation } from 'react-router-dom';
 
 export const PopulationSidebar = () => {
   const [activeTab, setActiveTab] = useState<'taskQueue' | 'patients' | 'campaigns' | 'billing' | 'insights'>('taskQueue');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+  
+  // Adjust positioning based on current page
+  const isPatientDetailPage = location.pathname.startsWith('/patient/');
+  const iconPosition = isPatientDetailPage ? 'right-4 top-36' : 'right-4 top-20';
   
   return (
     <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
       <SheetTrigger asChild>
         <button 
-          className="flex items-center justify-center w-10 h-10 bg-[#1E4D36] rounded-full shadow-lg hover:bg-[#2A6349] transition-colors pulse-animation fixed right-4 top-20 z-50"
+          className={`flex items-center justify-center w-10 h-10 bg-[#1E4D36] rounded-full shadow-lg hover:bg-[#2A6349] transition-colors pulse-animation fixed ${iconPosition} z-50`}
           aria-label="Open Population Health sidebar"
         >
           <img 
