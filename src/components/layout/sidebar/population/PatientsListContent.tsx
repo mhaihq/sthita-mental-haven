@@ -1,14 +1,15 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, User, AlertTriangle, Eye } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Eye, AlertTriangle } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { patientsData } from '@/data/patientsData';
 import { useNavigate } from 'react-router-dom';
 
-const PatientCard: React.FC<{ patient: typeof patientsData[0] }> = ({ patient }) => {
+export const PatientsListContent: React.FC = () => {
   const navigate = useNavigate();
+  const activePatients = patientsData.filter(patient => patient.status === 'Active');
   
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -32,81 +33,16 @@ const PatientCard: React.FC<{ patient: typeof patientsData[0] }> = ({ patient })
     return age;
   };
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (patient: typeof patientsData[0]) => {
     if (patient.isClickable) {
       navigate(`/patient/${patient.id}`);
     }
   };
 
-  const handleQuickAction = () => {
+  const handleQuickAction = (patient: typeof patientsData[0]) => {
     navigate(`/patient/${patient.id}`);
   };
 
-  return (
-    <Card className="mb-3 hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="space-y-3">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="font-medium text-sm text-[#1E4D36]">{patient.name}</h3>
-              <p className="text-xs text-gray-600">ID: {patient.id}</p>
-            </div>
-            <Badge className={`text-xs ${getSeverityColor(patient.severity)}`}>
-              {patient.severity}
-            </Badge>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="flex items-center gap-1 text-gray-600">
-              <User size={12} />
-              <span>{calculateAge(patient.dateOfBirth)}y, {patient.gender}</span>
-            </div>
-            <div className="flex items-center gap-1 text-gray-600">
-              <Calendar size={12} />
-              <span>{new Date(patient.lastVisit).toLocaleDateString()}</span>
-            </div>
-          </div>
-          
-          <div className="text-xs">
-            <p className="text-gray-700 font-medium">{patient.primaryDiagnosis}</p>
-            <p className="text-gray-500">{patient.diagnosisCode}</p>
-          </div>
-          
-          {patient.nextAppointment && (
-            <div className="text-xs text-blue-600">
-              Next: {new Date(patient.nextAppointment).toLocaleDateString()}
-            </div>
-          )}
-          
-          <div className="flex gap-2">
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="h-6 px-2 text-xs flex-1"
-              onClick={handleViewDetails}
-              disabled={!patient.isClickable}
-            >
-              <Eye size={12} className="mr-1" />
-              View Details
-            </Button>
-            <Button 
-              size="sm" 
-              className="h-6 px-2 text-xs bg-[#1E4D36] hover:bg-[#2A6349]"
-              onClick={handleQuickAction}
-            >
-              <AlertTriangle size={12} className="mr-1" />
-              Quick Action
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-export const PatientsListContent: React.FC = () => {
-  const activePatients = patientsData.filter(patient => patient.status === 'Active');
-  
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -116,10 +52,72 @@ export const PatientsListContent: React.FC = () => {
         </Badge>
       </div>
       
-      <div className="space-y-3 max-h-96 overflow-y-auto medical-scrollbar">
-        {activePatients.map(patient => (
-          <PatientCard key={patient.id} patient={patient} />
-        ))}
+      <div className="border rounded-lg overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-gray-50">
+              <TableHead className="text-xs font-medium">Patient</TableHead>
+              <TableHead className="text-xs font-medium">Age/Gender</TableHead>
+              <TableHead className="text-xs font-medium">Severity</TableHead>
+              <TableHead className="text-xs font-medium">Last Visit</TableHead>
+              <TableHead className="text-xs font-medium">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {activePatients.map(patient => (
+              <TableRow key={patient.id} className="hover:bg-gray-50">
+                <TableCell className="py-2">
+                  <div>
+                    <p className="font-medium text-xs text-[#1E4D36]">{patient.name}</p>
+                    <p className="text-xs text-gray-500">ID: {patient.id}</p>
+                    <p className="text-xs text-gray-600 mt-1">{patient.primaryDiagnosis}</p>
+                  </div>
+                </TableCell>
+                <TableCell className="py-2">
+                  <div className="text-xs text-gray-600">
+                    <p>{calculateAge(patient.dateOfBirth)}y</p>
+                    <p>{patient.gender}</p>
+                  </div>
+                </TableCell>
+                <TableCell className="py-2">
+                  <Badge className={`text-xs ${getSeverityColor(patient.severity)}`}>
+                    {patient.severity}
+                  </Badge>
+                </TableCell>
+                <TableCell className="py-2">
+                  <div className="text-xs text-gray-600">
+                    <p>{new Date(patient.lastVisit).toLocaleDateString()}</p>
+                    {patient.nextAppointment && (
+                      <p className="text-blue-600">
+                        Next: {new Date(patient.nextAppointment).toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell className="py-2">
+                  <div className="flex gap-1">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="h-6 px-2 text-xs"
+                      onClick={() => handleViewDetails(patient)}
+                      disabled={!patient.isClickable}
+                    >
+                      <Eye size={10} />
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      className="h-6 px-2 text-xs bg-[#1E4D36] hover:bg-[#2A6349]"
+                      onClick={() => handleQuickAction(patient)}
+                    >
+                      <AlertTriangle size={10} />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
       
       <div className="grid grid-cols-3 gap-2 pt-2 border-t">
