@@ -1,13 +1,34 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { PopulationSidebar } from '@/components/layout/PopulationSidebar';
 
 const Index = () => {
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState<'taskQueue' | 'patients' | 'campaigns' | 'billing' | 'insights'>(
+    (tabParam as any) || 'taskQueue'
+  );
+
+  // Update active tab when URL parameter changes
+  useEffect(() => {
+    if (tabParam && ['taskQueue', 'patients', 'campaigns', 'billing', 'insights'].includes(tabParam)) {
+      setActiveTab(tabParam as any);
+    }
+  }, [tabParam]);
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Population Sidebar */}
-      <PopulationSidebar />
+      <PopulationSidebar 
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
