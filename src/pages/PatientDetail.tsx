@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -17,7 +18,21 @@ import HanaSidebar from '@/components/layout/HanaSidebar';
 const PatientDetail = () => {
   const { patientId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('overview');
+  const [shouldOpenSidebar, setShouldOpenSidebar] = useState(false);
+
+  // Check if we should auto-open the sidebar
+  useEffect(() => {
+    const openSidebar = searchParams.get('openSidebar');
+    if (openSidebar === 'true') {
+      setShouldOpenSidebar(true);
+      // Clean up the URL parameter
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete('openSidebar');
+      navigate(`/patient/${patientId}`, { replace: true });
+    }
+  }, [searchParams, navigate, patientId]);
 
   // For now, we only support Sthita Pujari's full data
   // Other patients would need their own data structure
@@ -153,7 +168,7 @@ const PatientDetail = () => {
         </Tabs>
       </main>
 
-      <HanaSidebar />
+      <HanaSidebar autoOpen={shouldOpenSidebar} />
       
       <style>
         {`

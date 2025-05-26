@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,7 +23,7 @@ const TaskRow: React.FC<{ task: PopulationTask }> = ({ task }) => {
 
   const handleTakeAction = () => {
     if (task.patientId === 'P100592') {
-      navigate(`/patient/${task.patientId}`);
+      navigate(`/patient/${task.patientId}?openSidebar=true`);
     }
   };
 

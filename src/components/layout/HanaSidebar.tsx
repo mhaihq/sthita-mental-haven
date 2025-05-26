@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { X, BadgeAlert } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { patientData } from '@/data/patientData';
@@ -23,9 +24,20 @@ const calculateAge = (dateOfBirth: string) => {
   return age;
 };
 
-export const HanaSidebar = () => {
+interface HanaSidebarProps {
+  autoOpen?: boolean;
+}
+
+export const HanaSidebar: React.FC<HanaSidebarProps> = ({ autoOpen = false }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'tasks' | 'careLog' | 'billing'>('overview');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  // Auto-open sidebar when autoOpen prop is true
+  useEffect(() => {
+    if (autoOpen) {
+      setIsSidebarOpen(true);
+    }
+  }, [autoOpen]);
   
   // Calculate patient age
   const patientAge = calculateAge(patientData.dateOfBirth);
