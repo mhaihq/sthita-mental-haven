@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,19 @@ import {
   MessageCircleX,
   CheckCircle2
 } from 'lucide-react';
+
+interface Patient {
+  id: string;
+  name: string;
+  cptCode: string;
+  description: string;
+  minutesUsed: number;
+  minutesTotal: number;
+  amount: string;
+  status: string;
+  daysRemaining: number;
+  riskFactors?: string[];
+}
 
 export const BillingContent: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<'ready' | 'at-risk'>('ready');
@@ -55,7 +67,7 @@ export const BillingContent: React.FC = () => {
     }
   ];
 
-  const readyToBillPatients = [
+  const readyToBillPatients: Patient[] = [
     {
       id: 'P001',
       name: 'Sarah Johnson',
@@ -110,10 +122,32 @@ export const BillingContent: React.FC = () => {
       amount: '$95.00',
       status: 'ready',
       daysRemaining: 9
+    },
+    {
+      id: 'P013',
+      name: 'Kevin Park',
+      cptCode: '99493',
+      description: 'Subsequent CoCM',
+      minutesUsed: 60,
+      minutesTotal: 60,
+      amount: '$160.00',
+      status: 'ready',
+      daysRemaining: 7
+    },
+    {
+      id: 'P014',
+      name: 'Rachel Green',
+      cptCode: 'G2214',
+      description: 'Initial Assessment',
+      minutesUsed: 50,
+      minutesTotal: 50,
+      amount: '$185.00',
+      status: 'ready',
+      daysRemaining: 4
     }
   ];
 
-  const atRiskPatients = [
+  const atRiskPatients: Patient[] = [
     {
       id: 'P006',
       name: 'Emma Davis',
@@ -173,10 +207,22 @@ export const BillingContent: React.FC = () => {
       status: 'at-risk',
       daysRemaining: 6,
       riskFactors: ['Not contacted in 10 days', 'Missing 5 minutes']
+    },
+    {
+      id: 'P015',
+      name: 'Thomas Lee',
+      cptCode: '99493',
+      description: 'Subsequent CoCM',
+      minutesUsed: 55,
+      minutesTotal: 60,
+      amount: '$160.00',
+      status: 'at-risk',
+      daysRemaining: 1,
+      riskFactors: ['Expires tomorrow', 'Missing physician consultation']
     }
   ];
 
-  const otherFilterPatients = [
+  const otherFilterPatients: Patient[] = [
     {
       id: 'P011',
       name: 'Robert Kim',
@@ -231,10 +277,10 @@ export const BillingContent: React.FC = () => {
   };
 
   const getRiskFactorIcon = (factor: string) => {
-    if (factor.includes('Expires') || factor.includes('days')) {
+    if (factor.includes('Expires') || factor.includes('days') || factor.includes('tomorrow')) {
       return <Calendar className="h-3 w-3 text-orange-500" />;
     }
-    if (factor.includes('Missing') || factor.includes('care plan') || factor.includes('documentation')) {
+    if (factor.includes('Missing') || factor.includes('care plan') || factor.includes('documentation') || factor.includes('consultation')) {
       return <ClipboardX className="h-3 w-3 text-red-500" />;
     }
     if (factor.includes('contacted')) {
