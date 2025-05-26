@@ -1,3 +1,4 @@
+
 export interface PatientSummary {
   id: string;
   name: string;
@@ -21,8 +22,8 @@ export const patientsData: PatientSummary[] = [
     primaryDiagnosis: "Major Depressive Disorder, Recurrent",
     diagnosisCode: "F33.2",
     severity: "Moderate",
-    lastVisit: "2023-05-15",
-    nextAppointment: "2023-05-22",
+    lastVisit: "2025-05-15",
+    nextAppointment: "2025-05-22",
     status: "Active",
     isClickable: true
   },
@@ -34,8 +35,8 @@ export const patientsData: PatientSummary[] = [
     primaryDiagnosis: "Generalized Anxiety Disorder",
     diagnosisCode: "F41.1",
     severity: "Mild",
-    lastVisit: "2023-05-10",
-    nextAppointment: "2023-05-25",
+    lastVisit: "2025-05-10",
+    nextAppointment: "2025-05-25",
     status: "Active",
     isClickable: false
   },
@@ -47,8 +48,8 @@ export const patientsData: PatientSummary[] = [
     primaryDiagnosis: "Bipolar Disorder Type I",
     diagnosisCode: "F31.1",
     severity: "Severe",
-    lastVisit: "2023-05-12",
-    nextAppointment: "2023-05-19",
+    lastVisit: "2025-05-12",
+    nextAppointment: "2025-05-19",
     status: "Active",
     isClickable: false
   },
@@ -60,7 +61,7 @@ export const patientsData: PatientSummary[] = [
     primaryDiagnosis: "Post-Traumatic Stress Disorder",
     diagnosisCode: "F43.1",
     severity: "Moderate",
-    lastVisit: "2023-05-08",
+    lastVisit: "2025-05-08",
     status: "Active",
     isClickable: false
   },
@@ -72,8 +73,8 @@ export const patientsData: PatientSummary[] = [
     primaryDiagnosis: "Social Anxiety Disorder",
     diagnosisCode: "F40.1",
     severity: "Mild",
-    lastVisit: "2023-05-05",
-    nextAppointment: "2023-05-26",
+    lastVisit: "2025-05-05",
+    nextAppointment: "2025-05-26",
     status: "Active",
     isClickable: false
   }
