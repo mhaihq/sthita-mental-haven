@@ -16,7 +16,8 @@ import {
   ChevronDown,
   Calendar,
   ClipboardX,
-  MessageCircleX
+  MessageCircleX,
+  CheckCircle2
 } from 'lucide-react';
 
 export const BillingContent: React.FC = () => {
@@ -60,7 +61,7 @@ export const BillingContent: React.FC = () => {
       name: 'Sarah Johnson',
       cptCode: 'G2214',
       description: 'Initial Assessment',
-      minutesUsed: 35,
+      minutesUsed: 50,
       minutesTotal: 50,
       amount: '$185.00',
       status: 'ready',
@@ -71,56 +72,113 @@ export const BillingContent: React.FC = () => {
       name: 'Michael Chen',
       cptCode: '99484',
       description: 'Monthly Service',
-      minutesUsed: 12,
+      minutesUsed: 20,
       minutesTotal: 20,
       amount: '$95.00',
       status: 'ready',
       daysRemaining: 8
+    },
+    {
+      id: 'P003',
+      name: 'Jennifer Martinez',
+      cptCode: '99492',
+      description: 'First Month CoCM',
+      minutesUsed: 70,
+      minutesTotal: 70,
+      amount: '$220.00',
+      status: 'ready',
+      daysRemaining: 12
+    },
+    {
+      id: 'P004',
+      name: 'David Wilson',
+      cptCode: 'G2214',
+      description: 'Initial Assessment',
+      minutesUsed: 50,
+      minutesTotal: 50,
+      amount: '$185.00',
+      status: 'ready',
+      daysRemaining: 6
+    },
+    {
+      id: 'P005',
+      name: 'Amanda Thompson',
+      cptCode: '99484',
+      description: 'Monthly Service',
+      minutesUsed: 20,
+      minutesTotal: 20,
+      amount: '$95.00',
+      status: 'ready',
+      daysRemaining: 9
     }
   ];
 
   const atRiskPatients = [
     {
-      id: 'P003',
+      id: 'P006',
       name: 'Emma Davis',
       cptCode: 'G2214',
       description: 'Initial Assessment',
       minutesUsed: 45,
-      minutesTotal: 70,
-      amount: '$220.00',
+      minutesTotal: 50,
+      amount: '$185.00',
       status: 'at-risk',
       daysRemaining: 3,
       riskFactors: ['Expires in 3 days', 'Missing care plan']
     },
     {
-      id: 'P004',
+      id: 'P007',
       name: 'James Wilson',
       cptCode: '99484',
       description: 'Monthly Service',
-      minutesUsed: 8,
+      minutesUsed: 18,
       minutesTotal: 20,
-      amount: '$180.00',
+      amount: '$95.00',
       status: 'at-risk',
       daysRemaining: 5,
-      riskFactors: ['Not contacted in 14 days']
+      riskFactors: ['Not contacted in 14 days', 'Missing 2 minutes']
     },
     {
-      id: 'P005',
+      id: 'P008',
       name: 'Lisa Anderson',
       cptCode: '99492',
       description: 'First Month CoCM',
-      minutesUsed: 55,
+      minutesUsed: 65,
       minutesTotal: 70,
-      amount: '$195.00',
+      amount: '$220.00',
       status: 'at-risk',
       daysRemaining: 2,
       riskFactors: ['Expires in 2 days', 'Missing documentation']
+    },
+    {
+      id: 'P009',
+      name: 'Robert Kim',
+      cptCode: 'G2214',
+      description: 'Initial Assessment',
+      minutesUsed: 42,
+      minutesTotal: 50,
+      amount: '$185.00',
+      status: 'at-risk',
+      daysRemaining: 4,
+      riskFactors: ['Missing 8 minutes', 'Care plan incomplete']
+    },
+    {
+      id: 'P010',
+      name: 'Maria Garcia',
+      cptCode: '99484',
+      description: 'Monthly Service',
+      minutesUsed: 15,
+      minutesTotal: 20,
+      amount: '$95.00',
+      status: 'at-risk',
+      daysRemaining: 6,
+      riskFactors: ['Not contacted in 10 days', 'Missing 5 minutes']
     }
   ];
 
   const otherFilterPatients = [
     {
-      id: 'P006',
+      id: 'P011',
       name: 'Robert Kim',
       cptCode: '99484',
       description: 'Monthly Service',
@@ -131,7 +189,7 @@ export const BillingContent: React.FC = () => {
       daysRemaining: 10
     },
     {
-      id: 'P007',
+      id: 'P012',
       name: 'Maria Garcia',
       cptCode: 'G2214',
       description: 'Initial Assessment',
@@ -157,7 +215,10 @@ export const BillingContent: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'ready':
-        return <Badge className="bg-green-100 text-green-700 border-green-200">Ready</Badge>;
+        return <Badge className="bg-green-100 text-green-700 border-green-200 flex items-center gap-1">
+          <CheckCircle2 className="h-3 w-3" />
+          Ready
+        </Badge>;
       case 'at-risk':
         return <Badge className="bg-orange-100 text-orange-700 border-orange-200">At Risk</Badge>;
       case 'under-minutes':
@@ -216,65 +277,75 @@ export const BillingContent: React.FC = () => {
 
       {/* Main Billing Table */}
       <Card className="shadow-md">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg text-[#1E4D36]">Patient Billing Status</CardTitle>
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg text-[#1E4D36] mb-4">Patient Billing Status</CardTitle>
           
-          {/* Primary Filter Tabs */}
-          <div className="flex flex-wrap gap-2 mt-4">
+          {/* Primary Filter Toggle */}
+          <div className="flex items-center p-1 bg-gray-100 rounded-lg w-fit">
             <Button
-              variant={activeFilter === 'ready' ? 'default' : 'outline'}
+              variant={activeFilter === 'ready' ? 'default' : 'ghost'}
               size="sm"
               className={`${
                 activeFilter === 'ready' 
-                  ? 'bg-[#1E4D36] hover:bg-[#2A6349] text-white' 
-                  : 'border-gray-200 hover:bg-gray-50'
-              }`}
+                  ? 'bg-[#1E4D36] hover:bg-[#2A6349] text-white shadow-sm' 
+                  : 'hover:bg-gray-50 text-gray-600'
+              } rounded-md px-4 py-2 transition-all`}
               onClick={() => setActiveFilter('ready')}
             >
+              <CheckCircle2 className="h-4 w-4 mr-2" />
               Ready to Bill
-              <Badge variant="secondary" className="ml-2 text-xs">
+              <Badge variant="secondary" className="ml-2 text-xs bg-white text-gray-700">
                 {readyToBillPatients.length}
               </Badge>
             </Button>
             
             <Button
-              variant={activeFilter === 'at-risk' ? 'default' : 'outline'}
+              variant={activeFilter === 'at-risk' ? 'default' : 'ghost'}
               size="sm"
               className={`${
                 activeFilter === 'at-risk' 
-                  ? 'bg-[#1E4D36] hover:bg-[#2A6349] text-white' 
-                  : 'border-gray-200 hover:bg-gray-50'
-              }`}
+                  ? 'bg-[#1E4D36] hover:bg-[#2A6349] text-white shadow-sm' 
+                  : 'hover:bg-gray-50 text-gray-600'
+              } rounded-md px-4 py-2 transition-all ml-1`}
               onClick={() => setActiveFilter('at-risk')}
             >
+              <AlertTriangle className="h-4 w-4 mr-2" />
               At Risk
-              <Badge variant="secondary" className="ml-2 text-xs">
+              <Badge variant="secondary" className="ml-2 text-xs bg-white text-gray-700">
                 {atRiskPatients.length}
               </Badge>
             </Button>
           </div>
 
           {/* Expandable Other Filters */}
-          <Collapsible open={isOtherFiltersOpen} onOpenChange={setIsOtherFiltersOpen}>
+          <Collapsible open={isOtherFiltersOpen} onOpenChange={setIsOtherFiltersOpen} className="mt-4">
             <CollapsibleTrigger asChild>
               <Button
                 variant="outline"
                 size="sm"
-                className="mt-2 border-gray-200 hover:bg-gray-50"
+                className="border-gray-300 hover:bg-gray-50 text-gray-600"
               >
-                Other Filters
+                Additional Filters
                 <ChevronDown className={`h-4 w-4 ml-2 transition-transform ${isOtherFiltersOpen ? 'rotate-180' : ''}`} />
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="mt-2">
-              <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" className="border-gray-200 hover:bg-gray-50">
+            <CollapsibleContent className="mt-3">
+              <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg">
+                <Button variant="outline" size="sm" className="border-gray-300 hover:bg-white text-gray-600">
                   Under Minutes
                   <Badge variant="secondary" className="ml-2 text-xs">8</Badge>
                 </Button>
-                <Button variant="outline" size="sm" className="border-gray-200 hover:bg-gray-50">
+                <Button variant="outline" size="sm" className="border-gray-300 hover:bg-white text-gray-600">
                   Blocked
                   <Badge variant="secondary" className="ml-2 text-xs">3</Badge>
+                </Button>
+                <Button variant="outline" size="sm" className="border-gray-300 hover:bg-white text-gray-600">
+                  Expired
+                  <Badge variant="secondary" className="ml-2 text-xs">2</Badge>
+                </Button>
+                <Button variant="outline" size="sm" className="border-gray-300 hover:bg-white text-gray-600">
+                  Pending Review
+                  <Badge variant="secondary" className="ml-2 text-xs">5</Badge>
                 </Button>
               </div>
             </CollapsibleContent>
@@ -286,37 +357,39 @@ export const BillingContent: React.FC = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50">
-                  <TableHead className="text-xs font-medium">Patient</TableHead>
-                  <TableHead className="text-xs font-medium">CPT Code</TableHead>
-                  <TableHead className="text-xs font-medium">Progress</TableHead>
-                  <TableHead className="text-xs font-medium">Amount</TableHead>
-                  <TableHead className="text-xs font-medium">Status</TableHead>
+                  <TableHead className="text-xs font-medium text-gray-700 px-6">Patient</TableHead>
+                  <TableHead className="text-xs font-medium text-gray-700">CPT Code</TableHead>
+                  <TableHead className="text-xs font-medium text-gray-700">Progress</TableHead>
+                  <TableHead className="text-xs font-medium text-gray-700">Amount</TableHead>
+                  <TableHead className="text-xs font-medium text-gray-700">Status</TableHead>
                   {activeFilter === 'at-risk' && (
-                    <TableHead className="text-xs font-medium">Risk Factors</TableHead>
+                    <TableHead className="text-xs font-medium text-gray-700">Risk Factors</TableHead>
                   )}
-                  <TableHead className="text-xs font-medium">Actions</TableHead>
+                  <TableHead className="text-xs font-medium text-gray-700">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {getCurrentPatients().map((patient) => (
-                  <TableRow key={patient.id} className="hover:bg-gray-50">
-                    <TableCell>
+                  <TableRow key={patient.id} className="hover:bg-gray-50 border-b border-gray-100">
+                    <TableCell className="px-6">
                       <div>
-                        <p className="font-medium text-sm">{patient.name}</p>
+                        <p className="font-medium text-sm text-gray-900">{patient.name}</p>
                         <p className="text-xs text-gray-500">ID: {patient.id}</p>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium text-sm">{patient.cptCode}</p>
+                        <p className="font-medium text-sm text-gray-900">{patient.cptCode}</p>
                         <p className="text-xs text-gray-500">{patient.description}</p>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="space-y-1">
+                      <div className="space-y-2">
                         <div className="flex justify-between text-xs">
-                          <span>{patient.minutesUsed}/{patient.minutesTotal} min</span>
-                          <span>{Math.round((patient.minutesUsed / patient.minutesTotal) * 100)}%</span>
+                          <span className="text-gray-600">{patient.minutesUsed}/{patient.minutesTotal} min</span>
+                          <span className="font-medium text-gray-900">
+                            {Math.round((patient.minutesUsed / patient.minutesTotal) * 100)}%
+                          </span>
                         </div>
                         <Progress 
                           value={(patient.minutesUsed / patient.minutesTotal) * 100} 
@@ -324,13 +397,13 @@ export const BillingContent: React.FC = () => {
                         />
                       </div>
                     </TableCell>
-                    <TableCell className="font-medium">{patient.amount}</TableCell>
+                    <TableCell className="font-medium text-gray-900">{patient.amount}</TableCell>
                     <TableCell>{getStatusBadge(patient.status)}</TableCell>
                     {activeFilter === 'at-risk' && (
                       <TableCell>
                         <div className="space-y-1">
                           {patient.riskFactors?.map((factor, index) => (
-                            <div key={index} className="flex items-center gap-1 text-xs">
+                            <div key={index} className="flex items-center gap-2 text-xs">
                               {getRiskFactorIcon(factor)}
                               <span className="text-gray-600">{factor}</span>
                             </div>
@@ -340,15 +413,20 @@ export const BillingContent: React.FC = () => {
                     )}
                     <TableCell>
                       <div className="flex gap-1">
-                        <Button size="sm" variant="outline" className="h-7 w-7 p-0">
+                        <Button size="sm" variant="outline" className="h-8 w-8 p-0 hover:bg-gray-50">
                           <Phone className="h-3 w-3" />
                         </Button>
-                        <Button size="sm" variant="outline" className="h-7 w-7 p-0">
+                        <Button size="sm" variant="outline" className="h-8 w-8 p-0 hover:bg-gray-50">
                           <FileText className="h-3 w-3" />
                         </Button>
                         {activeFilter === 'ready' && (
-                          <Button size="sm" className="h-7 px-2 bg-[#1E4D36] hover:bg-[#2A6349] text-xs">
-                            Bill
+                          <Button size="sm" className="h-8 px-3 bg-[#1E4D36] hover:bg-[#2A6349] text-xs">
+                            Bill Now
+                          </Button>
+                        )}
+                        {activeFilter === 'at-risk' && (
+                          <Button size="sm" variant="outline" className="h-8 px-3 text-xs border-orange-200 text-orange-700 hover:bg-orange-50">
+                            Review
                           </Button>
                         )}
                       </div>
