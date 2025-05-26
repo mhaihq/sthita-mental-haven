@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MessageCircle, FileText, CalendarDays } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -9,25 +8,34 @@ import { patientData } from '@/data/patientData';
 import { PriorityTaskItem } from './PriorityTaskItem';
 import { ArrowUpRight, FileText as FileTextIcon } from '@/components/SidebarIcons';
 
-// Sample data - in a real app, this would come from an API or props
+// Updated priority tasks to match population level tasks for Sthita Pujari
 const priorityTasks = [
   {
-    id: 'T-1001',
-    title: 'PHQ-9 ↑ 13',
-    description: 'Score increased from 8 on Apr 1',
-    dueDate: 'Today',
+    id: 'T001',
+    title: 'Medication Reconciliation',
+    description: 'Review and update current medications list',
+    dueDate: '2023-05-23',
     status: 'Needs Review',
     statusColor: 'red',
     icon: <ArrowUpRight className="text-red-500" size={18} />
   },
   {
-    id: 'T-1002',
-    title: 'Missed Lisinopril',
-    description: '2 doses missed (Apr 3-4)',
-    dueDate: 'Today',
-    status: 'Assigned',
-    statusColor: 'amber',
-    icon: <FileTextIcon className="text-amber-500" size={18} />
+    id: 'T008',
+    title: 'Annual Physical Assessment',
+    description: 'Complete comprehensive annual physical examination',
+    dueDate: '2023-05-25',
+    status: 'Needs Review',
+    statusColor: 'red',
+    icon: <FileTextIcon className="text-red-500" size={18} />
+  },
+  {
+    id: 'T009',
+    title: 'Therapy Session Follow-up',
+    description: 'Follow up on recent therapy session and medication adjustments',
+    dueDate: '2023-05-23',
+    status: 'Needs Review',
+    statusColor: 'red',
+    icon: <ArrowUpRight className="text-red-500" size={18} />
   }
 ];
 
@@ -223,4 +231,3 @@ export const ModifiedOverviewTab: React.FC<ModifiedOverviewTabProps> = ({ onTask
     </div>
   );
 };
-

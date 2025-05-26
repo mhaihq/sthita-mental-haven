@@ -1,4 +1,3 @@
-
 // Patient data schema
 export interface PatientData {
   id: string;
@@ -93,8 +92,8 @@ export interface PatientData {
 export const patientData: PatientData = {
   id: "P100592",
   name: "Sthita Pujari",
-  dateOfBirth: "1992-05-15",
-  gender: "Female",
+  dateOfBirth: "1997-05-15",
+  gender: "Male",
   contactInfo: {
     phone: "(555) 123-4567",
     email: "sthita.p@example.com",
@@ -107,7 +106,7 @@ export const patientData: PatientData = {
   },
   emergencyContact: {
     name: "Rajan Pujari",
-    relationship: "Spouse",
+    relationship: "Father",
     phone: "(555) 987-6543"
   },
   diagnosis: {

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, BadgeAlert } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -112,7 +111,7 @@ export const HanaSidebar = () => {
           {/* Footer with minimal design */}
           <div className="bg-white shadow-sm p-4 border-t border-gray-200">
             <p className="text-xs text-gray-500 text-center">
-              Hana Compass • Patient: Sthita Pujari • Last updated: 3 days ago
+              Hana Compass • Patient: Sthita Pujari (Male, 27) • Last updated: 3 days ago
             </p>
           </div>
         </div>
