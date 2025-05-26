@@ -1,20 +1,19 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
-  AlertTriangle, Clock, Check, X, Play, Pause, MessageSquare, 
-  FileText, ArrowLeft, PlusCircle, Calendar
+  AlertTriangle, Clock, ArrowLeft, Play, Pause
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
+import { StepProgress } from '@/components/ui/step-progress';
+import { RiskAssessmentStep } from '@/components/care-task/RiskAssessmentStep';
+import { CarePlanStep } from '@/components/care-task/CarePlanStep';
+import { FollowUpStep } from '@/components/care-task/FollowUpStep';
+import { FinalizeStep } from '@/components/care-task/FinalizeStep';
 
 // Sample data - would come from an API or context in a real app
 const careTasksData = {
@@ -90,6 +89,8 @@ const careTasksData = {
   }
 };
 
+const STEPS = ['Risk Assessment', 'Care Plan', 'Follow-up', 'Finalize'];
+
 const CareTaskDetail = () => {
   const { taskId } = useParams<{ taskId: string }>();
   const navigate = useNavigate();
@@ -100,10 +101,12 @@ const CareTaskDetail = () => {
   const [showAudioDialog, setShowAudioDialog] = useState(false);
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(true);
-  const [riskApproved, setRiskApproved] = useState(false);
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
   const [manualAction, setManualAction] = useState("");
   const [summary, setSummary] = useState("");
+  const [currentStep, setCurrentStep] = useState(1);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [riskApproved, setRiskApproved] = useState<boolean | null>(null);
 
   // Mock data fetching
   useEffect(() => {
@@ -150,7 +153,21 @@ const CareTaskDetail = () => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  // Handle risk approval
+  // Step navigation functions
+  const nextStep = () => {
+    if (currentStep < STEPS.length) {
+      setCompletedSteps(prev => [...prev, currentStep]);
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const goToStep = (stepNumber: number) => {
+    if (stepNumber <= currentStep || completedSteps.includes(stepNumber)) {
+      setCurrentStep(stepNumber);
+    }
+  };
+
+  // Risk assessment handlers
   const handleRiskApproval = (approved: boolean) => {
     setRiskApproved(approved);
     toast({
@@ -160,9 +177,15 @@ const CareTaskDetail = () => {
         : "The risk assessment has been marked as not applicable.",
       variant: approved ? "default" : "destructive"
     });
+
+    if (approved) {
+      setTimeout(() => {
+        nextStep();
+      }, 1000);
+    }
   };
 
-  // Handle action selection
+  // Care plan handlers
   const handleActionToggle = (actionId: string, checked: boolean) => {
     if (checked) {
       setSelectedActions(prev => [...prev, actionId]);
@@ -258,285 +281,77 @@ const CareTaskDetail = () => {
       <h1 className="text-2xl font-bold mb-2">{task.title}</h1>
       <p className="text-gray-600 mb-6">{task.description}</p>
 
-      {/* Task content */}
+      {/* Progress Bar */}
+      <StepProgress 
+        currentStep={currentStep}
+        completedSteps={completedSteps}
+        steps={STEPS}
+      />
+
+      {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main content - 2/3 width on large screens */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Section 1: Summary */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <AlertTriangle className="mr-2 text-amber-500" size={20} />
-                Risk Assessment
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-medium mb-2">Why this was flagged:</h3>
-                <p className="text-gray-600">{task.flagReason}</p>
-              </div>
-              
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-medium">Evidence from patient call:</h3>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setShowAudioDialog(true)}
-                  >
-                    <Play size={16} className="mr-1" /> Audio & Transcript
-                  </Button>
-                </div>
-                
-                <ul className="space-y-2">
-                  {task.evidenceFromCall.map((evidence, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <Badge variant="outline" className="mt-1 shrink-0">
-                        {evidence.timestamp}
-                      </Badge>
-                      <span className="text-gray-700">"{evidence.text}"</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              <div className="flex items-center gap-3">
-                <h3 className="font-medium">CPT Code:</h3>
-                <Badge className="bg-purple-100 text-purple-800 border-purple-200 font-mono">
-                  {task.cptCode}
-                </Badge>
-                <span className="text-sm text-gray-600">{task.cptDescription}</span>
-              </div>
-              
-              {!riskApproved ? (
-                <div className="flex gap-3 mt-4">
-                  <Button 
-                    className="bg-green-600 hover:bg-green-700 flex-1"
-                    onClick={() => handleRiskApproval(true)}
-                  >
-                    <Check size={16} className="mr-2" /> Approve Risk
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="text-red-600 border-red-200 hover:bg-red-50 flex-1"
-                    onClick={() => handleRiskApproval(false)}
-                  >
-                    <X size={16} className="mr-2" /> Deny Risk
-                  </Button>
-                </div>
-              ) : (
-                <div className="bg-green-50 border border-green-200 text-green-800 p-3 rounded-md flex items-center gap-2">
-                  <Check size={16} className="text-green-600" />
-                  Risk assessment approved
+          {/* Step Content */}
+          {currentStep === 1 && (
+            <div className="space-y-4">
+              <RiskAssessmentStep
+                task={task}
+                riskApproved={riskApproved}
+                onRiskDecision={handleRiskApproval}
+                onShowAudio={() => setShowAudioDialog(true)}
+              />
+              {riskApproved === false && (
+                <div className="text-center py-8">
+                  <p className="text-gray-600 mb-4">Risk assessment denied. Task workflow ended.</p>
+                  <Button onClick={() => navigate('/')}>Return to Dashboard</Button>
                 </div>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Section 2: Care Plan Actions (only shown if risk is approved) */}
-          {riskApproved && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <FileText className="mr-2 text-blue-500" size={20} />
-                  Care Plan Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <h3 className="font-medium">AI Suggested Actions:</h3>
-                  {task.suggestedActions.map((action) => (
-                    <div key={action.id} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={action.id} 
-                        defaultChecked={action.default}
-                        onCheckedChange={(checked) => 
-                          handleActionToggle(action.id, checked === true)
-                        }
-                      />
-                      <label
-                        htmlFor={action.id}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {action.text}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="pt-2">
-                  <h3 className="font-medium mb-2">Add Custom Action:</h3>
-                  <div className="flex gap-2">
-                    <Input 
-                      placeholder="Enter custom action..."
-                      value={manualAction}
-                      onChange={(e) => setManualAction(e.target.value)}
-                    />
-                    <Button 
-                      onClick={handleAddManualAction}
-                      disabled={!manualAction.trim()}
-                    >
-                      Add
-                    </Button>
-                  </div>
-                </div>
-                
-                <Separator />
-                
-                <div>
-                  <h3 className="font-medium mb-2">Care Plan Summary:</h3>
-                  <Textarea 
-                    className="min-h-[120px]"
-                    value={summary}
-                    onChange={(e) => setSummary(e.target.value)}
-                  />
-                  <p className="text-sm text-gray-500 mt-2">
-                    This summary will be added to billing documents.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            </div>
           )}
 
-          {/* Section 3: Follow-up Plan (only shown if risk is approved) */}
-          {riskApproved && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Calendar className="mr-2 text-green-500" size={20} />
-                  Follow-up Plan
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-blue-50 p-4 rounded-lg mb-4">
-                  <div className="flex justify-between items-center">
-                    <h3 className="font-medium text-blue-800 flex items-center">
-                      <Calendar className="mr-2" size={16} /> Follow-up plan
-                    </h3>
-                    <Badge className="bg-green-100 text-green-700">Scheduled</Badge>
-                  </div>
-                  
-                  <p className="my-3 text-gray-700">I've scheduled a follow-up for <strong>Apr 10</strong>. Who should handle this call?</p>
-                  
-                  <div className="flex gap-3 mb-4">
-                    <Button className="bg-purple-600 hover:bg-purple-700">
-                      AI Assistant
-                    </Button>
-                    <Button variant="outline">
-                      Myself
-                    </Button>
-                    <Button variant="outline">
-                      Escalate
-                    </Button>
-                    <div className="flex-grow"></div>
-                    <Button variant="ghost" className="ml-auto">
-                      Change Date
-                    </Button>
-                  </div>
-                  
-                  <div className="bg-blue-100 p-3 rounded-md">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center text-blue-800">
-                        <MessageSquare size={16} className="mr-1" />
-                        <span className="font-medium">For that call, I'll cover these topics:</span>
-                      </div>
-                      <Badge className="bg-blue-200 text-blue-800">2 selected</Badge>
-                    </div>
-                    
-                    <div className="space-y-2 pl-2">
-                      {[
-                        { id: 'check-med', label: 'Check medication adherence', checked: true },
-                        { id: 'side-effects', label: 'Ask about side effects', checked: true },
-                        { id: 'daily', label: 'Review daily medication routine', checked: false },
-                        { id: 'refills', label: 'Check if refills are needed', checked: false },
-                      ].map(item => (
-                        <div key={item.id} className="flex items-center space-x-2">
-                          <Checkbox id={`followup-${item.id}`} defaultChecked={item.checked} />
-                          <label htmlFor={`followup-${item.id}`} className="text-sm text-gray-700">
-                            {item.label}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <div className="mt-4">
-                      <label className="text-sm text-gray-700">Want me to add anything else?</label>
-                      <div className="flex mt-1">
-                        <Input placeholder="Add a custom topic..." className="bg-white" />
-                        <Button className="ml-2">Add</Button>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 p-2 bg-white rounded border border-blue-200">
-                      <div className="flex items-center text-sm text-blue-800">
-                        <MessageSquare size={14} className="mr-1" /> 
-                        AI will call on Apr 10 and cover 2 selected topics: 
-                        <span className="font-medium ml-1">
-                          Check medication adherence, Ask about side effects
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {currentStep === 2 && riskApproved && (
+            <div className="space-y-4">
+              <CarePlanStep
+                task={task}
+                selectedActions={selectedActions}
+                manualAction={manualAction}
+                summary={summary}
+                onActionToggle={handleActionToggle}
+                onManualActionChange={setManualAction}
+                onAddManualAction={handleAddManualAction}
+                onSummaryChange={setSummary}
+              />
+              <div className="flex justify-end">
+                <Button onClick={nextStep}>Next: Follow-up Plan</Button>
+              </div>
+            </div>
           )}
 
-          {/* Section 4: Finalize (only shown if risk is approved) */}
-          {riskApproved && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Check className="mr-2 text-green-500" size={20} />
-                  Finalize and Bill
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                  <h3 className="font-medium mb-2">Time Spent:</h3>
-                  <div className="flex items-center gap-2 mb-4">
-                    <Badge className="bg-blue-100 text-blue-800 font-mono text-lg py-1 px-3">
-                      {formatTime(timer)}
-                    </Badge>
-                    <span className="text-gray-600">minutes</span>
-                    
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="ml-2"
-                      onClick={() => setIsTimerRunning(!isTimerRunning)}
-                    >
-                      {isTimerRunning ? (
-                        <><Pause size={14} className="mr-1" /> Pause</>
-                      ) : (
-                        <><Play size={14} className="mr-1" /> Resume</>
-                      )}
-                    </Button>
-                  </div>
-                  
-                  <div className="space-y-2 mb-4">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-purple-100 text-purple-800 border-purple-200 font-mono">
-                          {task.cptCode}
-                        </Badge>
-                        <span className="text-sm text-gray-600">{task.cptDescription}</span>
-                      </div>
-                      <span className="font-medium">{formatTime(timer)}/20 min</span>
-                    </div>
-                    <Progress value={(timer / (20 * 60)) * 100} className="h-2" />
-                  </div>
-                  
-                  <Button 
-                    className="w-full bg-green-600 hover:bg-green-700" 
-                    onClick={handleFinalize}
-                  >
-                    <Check className="mr-2" size={16} />
-                    Complete and Add to Billing
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+          {currentStep === 3 && riskApproved && (
+            <div className="space-y-4">
+              <FollowUpStep />
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => goToStep(2)}>Back: Care Plan</Button>
+                <Button onClick={nextStep}>Next: Finalize</Button>
+              </div>
+            </div>
+          )}
+
+          {currentStep === 4 && riskApproved && (
+            <div className="space-y-4">
+              <FinalizeStep
+                task={task}
+                timer={timer}
+                isTimerRunning={isTimerRunning}
+                onToggleTimer={() => setIsTimerRunning(!isTimerRunning)}
+                onFinalize={handleFinalize}
+                formatTime={formatTime}
+              />
+              <div className="flex justify-start">
+                <Button variant="outline" onClick={() => goToStep(3)}>Back: Follow-up Plan</Button>
+              </div>
+            </div>
           )}
         </div>
         
@@ -613,6 +428,10 @@ const CareTaskDetail = () => {
                 <div>
                   <dt className="text-sm text-gray-500">Expected Time</dt>
                   <dd>{task.minutes} minutes</dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-gray-500">Current Step</dt>
+                  <dd>{STEPS[currentStep - 1]}</dd>
                 </div>
               </dl>
             </CardContent>
