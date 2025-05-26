@@ -53,7 +53,7 @@ export const HanaSidebar = () => {
     <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
       <SheetTrigger asChild>
         <button 
-          className="flex items-center justify-center w-10 h-10 bg-white border-2 border-[#1E4D36] rounded-full shadow-lg hover:bg-gray-50 transition-colors pulse-animation fixed right-4 top-20 z-50"
+          className="flex items-center justify-center w-10 h-10 bg-[#1E4D36] rounded-full shadow-lg hover:bg-[#2A6349] transition-colors pulse-animation fixed right-4 top-20 z-50"
           aria-label="Open Hana sidebar"
         >
           <img 
