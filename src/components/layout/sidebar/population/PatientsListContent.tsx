@@ -1,15 +1,31 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Eye, AlertTriangle } from 'lucide-react';
+import { Eye, Search } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { patientsData } from '@/data/patientsData';
 import { useNavigate } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export const PatientsListContent: React.FC = () => {
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [severityFilter, setSeverityFilter] = useState<string>('all');
+  
   const activePatients = patientsData.filter(patient => patient.status === 'Active');
+  
+  // Filter patients based on search and severity
+  const filteredPatients = activePatients.filter(patient => {
+    const matchesSearch = patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         patient.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         patient.primaryDiagnosis.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesSeverity = severityFilter === 'all' || patient.severity === severityFilter;
+    
+    return matchesSearch && matchesSeverity;
+  });
   
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -33,14 +49,8 @@ export const PatientsListContent: React.FC = () => {
     return age;
   };
 
-  const handleViewDetails = (patient: typeof patientsData[0]) => {
-    if (patient.isClickable) {
-      navigate(`/patient/${patient.id}`);
-    }
-  };
-
-  const handleQuickAction = (patient: typeof patientsData[0]) => {
-    navigate(`/patient/${patient.id}`);
+  const handleViewProfile = (patient: typeof patientsData[0]) => {
+    navigate(`/patient/${patient.id}?openSidebar=true`);
   };
 
   return (
@@ -48,8 +58,55 @@ export const PatientsListContent: React.FC = () => {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-[#1E4D36]">Patient Population</h2>
         <Badge variant="outline" className="text-xs">
-          {activePatients.length} Active Patients
+          {filteredPatients.length} Patients
         </Badge>
+      </div>
+
+      {/* Risk Counters - Moved to top */}
+      <div className="grid grid-cols-3 gap-2 p-3 bg-white rounded-lg border">
+        <div className="text-center">
+          <p className="text-xs text-gray-500">High Risk</p>
+          <p className="font-medium text-sm text-red-600">
+            {activePatients.filter(p => p.severity === 'Severe').length}
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-xs text-gray-500">Medium Risk</p>
+          <p className="font-medium text-sm text-yellow-600">
+            {activePatients.filter(p => p.severity === 'Moderate').length}
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-xs text-gray-500">Low Risk</p>
+          <p className="font-medium text-sm text-green-600">
+            {activePatients.filter(p => p.severity === 'Mild').length}
+          </p>
+        </div>
+      </div>
+
+      {/* Search and Filter Controls */}
+      <div className="space-y-2">
+        <div className="relative">
+          <Search size={14} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <Input
+            placeholder="Search patients..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-8 h-8 text-xs"
+          />
+        </div>
+        
+        <Select value={severityFilter} onValueChange={setSeverityFilter}>
+          <SelectTrigger className="h-8 text-xs">
+            <SelectValue placeholder="Filter by severity" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Severities</SelectItem>
+            <SelectItem value="Severe">High Risk</SelectItem>
+            <SelectItem value="Moderate">Medium Risk</SelectItem>
+            <SelectItem value="Mild">Low Risk</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       
       <div className="border rounded-lg overflow-hidden">
@@ -64,11 +121,11 @@ export const PatientsListContent: React.FC = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {activePatients.map(patient => (
+            {filteredPatients.map(patient => (
               <TableRow key={patient.id} className="hover:bg-gray-50">
                 <TableCell className="py-2">
                   <div>
-                    <p className="font-medium text-xs text-[#1E4D36]">{patient.name}</p>
+                    <p className="font-bold text-xs text-[#1E4D36]">{patient.name}</p>
                     <p className="text-xs text-gray-500">ID: {patient.id}</p>
                     <p className="text-xs text-gray-600 mt-1">{patient.primaryDiagnosis}</p>
                   </div>
@@ -95,51 +152,27 @@ export const PatientsListContent: React.FC = () => {
                   </div>
                 </TableCell>
                 <TableCell className="py-2">
-                  <div className="flex gap-1">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="h-6 px-2 text-xs"
-                      onClick={() => handleViewDetails(patient)}
-                      disabled={!patient.isClickable}
-                    >
-                      <Eye size={10} />
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      className="h-6 px-2 text-xs bg-[#1E4D36] hover:bg-[#2A6349]"
-                      onClick={() => handleQuickAction(patient)}
-                    >
-                      <AlertTriangle size={10} />
-                    </Button>
-                  </div>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="h-6 px-2 text-xs flex items-center gap-1"
+                    onClick={() => handleViewProfile(patient)}
+                  >
+                    <Eye size={10} />
+                    View Profile
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
-      
-      <div className="grid grid-cols-3 gap-2 pt-2 border-t">
-        <div className="text-center">
-          <p className="text-xs text-gray-500">High Risk</p>
-          <p className="font-medium text-sm text-red-600">
-            {activePatients.filter(p => p.severity === 'Severe').length}
-          </p>
+
+      {filteredPatients.length === 0 && (
+        <div className="text-center py-4 text-gray-500 text-sm">
+          No patients found matching your search criteria.
         </div>
-        <div className="text-center">
-          <p className="text-xs text-gray-500">Medium Risk</p>
-          <p className="font-medium text-sm text-yellow-600">
-            {activePatients.filter(p => p.severity === 'Moderate').length}
-          </p>
-        </div>
-        <div className="text-center">
-          <p className="text-xs text-gray-500">Low Risk</p>
-          <p className="font-medium text-sm text-green-600">
-            {activePatients.filter(p => p.severity === 'Mild').length}
-          </p>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
