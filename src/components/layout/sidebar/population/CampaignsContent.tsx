@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -61,9 +60,13 @@ export const CampaignsContent: React.FC = () => {
   ]);
 
   const [newCampaignForm, setNewCampaignForm] = useState({
+    name: '',
     message: '',
-    selectedPrompt: ''
+    contactMethod: 'both',
+    patientGroup: 'all'
   });
+
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const stats = [
     {
@@ -104,6 +107,13 @@ export const CampaignsContent: React.FC = () => {
     'Medication adherence reminder for chronic patients'
   ];
 
+  const patientGroups = [
+    { value: 'all', label: 'All Patients', count: '1,234' },
+    { value: 'high-risk', label: 'High Risk', count: '234' },
+    { value: 'medium-risk', label: 'Medium Risk', count: '456' },
+    { value: 'low-risk', label: 'Low Risk', count: '544' }
+  ];
+
   const launchCampaign = (campaignId: number) => {
     const campaign = recommendedCampaigns.find(c => c.id === campaignId);
     if (campaign) {
@@ -119,23 +129,35 @@ export const CampaignsContent: React.FC = () => {
     }
   };
 
-  const createNewCampaign = () => {
-    if (newCampaignForm.message || newCampaignForm.selectedPrompt) {
+  const handleSuggestedPromptClick = (prompt: string) => {
+    setNewCampaignForm({
+      ...newCampaignForm,
+      message: prompt
+    });
+  };
+
+  const generateCampaign = () => {
+    if (newCampaignForm.name && (newCampaignForm.message)) {
+      const selectedGroup = patientGroups.find(g => g.value === newCampaignForm.patientGroup);
+      const contactMethodText = newCampaignForm.contactMethod === 'both' ? 'Voice with SMS fallback' : 
+                               newCampaignForm.contactMethod === 'call' ? 'Voice only' : 'SMS only';
+      
       const newCampaign = {
         id: Date.now(),
-        title: 'New Campaign',
+        title: newCampaignForm.name,
         category: 'Custom',
         status: 'In Progress',
         statusColor: 'bg-green-100 text-green-800',
         priority: 'Medium priority',
         priorityColor: 'bg-yellow-100 text-yellow-800',
-        description: 'Voice with SMS fallback',
-        reached: '0 of 100 reached',
+        description: contactMethodText,
+        reached: `0 of ${selectedGroup?.count || '100'} reached`,
         startDate: new Date().toLocaleDateString(),
         completion: 0
       };
       setActiveCampaigns([...activeCampaigns, newCampaign]);
-      setNewCampaignForm({ message: '', selectedPrompt: '' });
+      setNewCampaignForm({ name: '', message: '', contactMethod: 'both', patientGroup: 'all' });
+      setIsSheetOpen(false);
     }
   };
 
@@ -147,7 +169,7 @@ export const CampaignsContent: React.FC = () => {
           <Megaphone size={20} className="text-[#1E4D36]" />
           <h1 className="text-lg font-semibold text-[#1E4D36]">Campaigns</h1>
         </div>
-        <Sheet>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button className="bg-[#1E4D36] hover:bg-[#1E4D36]/90 text-white w-full sm:w-auto">
               <Plus size={16} />
@@ -160,26 +182,40 @@ export const CampaignsContent: React.FC = () => {
             </SheetHeader>
             
             <div className="space-y-6">
-              {/* AI-First Campaign Builder */}
-              <div className="bg-purple-50 p-6 rounded-lg border">
-                <h3 className="text-lg font-semibold text-[#1E4D36] mb-2">AI-First Campaign Builder</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Describe what kind of message you want to send and the AI will help you create it.
+              {/* Campaign Builder */}
+              <div className="bg-gray-50 p-6 rounded-lg border shadow-sm">
+                <h3 className="text-lg font-semibold text-[#1E4D36] mb-2">Campaign Builder</h3>
+                <p className="text-gray-600 text-sm mb-6">
+                  Create and customize your campaign with AI assistance.
                 </p>
                 
-                <div className="space-y-4">
+                <div className="space-y-6">
+                  {/* Campaign Name */}
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-2 block">
-                      💬 What kind of message would you like to send?
+                      Campaign Name
+                    </Label>
+                    <Input
+                      placeholder="Enter campaign name"
+                      value={newCampaignForm.name}
+                      onChange={(e) => setNewCampaignForm({...newCampaignForm, name: e.target.value})}
+                    />
+                  </div>
+
+                  {/* Message */}
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                      💬 Campaign Message
                     </Label>
                     <Textarea
                       placeholder="E.g., Remind CCM patients to complete their PHQ-9 screenings"
                       value={newCampaignForm.message}
                       onChange={(e) => setNewCampaignForm({...newCampaignForm, message: e.target.value})}
-                      className="min-h-[80px]"
+                      className="min-h-[100px]"
                     />
                   </div>
 
+                  {/* Suggested Prompts */}
                   <div>
                     <Label className="text-sm font-medium text-amber-600 mb-3 block">
                       ✨ Suggested Prompts:
@@ -189,8 +225,8 @@ export const CampaignsContent: React.FC = () => {
                         <Button
                           key={index}
                           variant="outline"
-                          className="justify-start text-left h-auto p-3 text-sm bg-purple-100 border-purple-200 hover:bg-purple-200"
-                          onClick={() => setNewCampaignForm({...newCampaignForm, selectedPrompt: prompt})}
+                          className="justify-start text-left h-auto p-3 text-sm bg-gray-100 border-gray-200 hover:bg-gray-200 transition-colors"
+                          onClick={() => handleSuggestedPromptClick(prompt)}
                         >
                           {prompt}
                         </Button>
@@ -198,9 +234,67 @@ export const CampaignsContent: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Contact Method */}
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                      Contact Method
+                    </Label>
+                    <RadioGroup 
+                      value={newCampaignForm.contactMethod} 
+                      onValueChange={(value) => setNewCampaignForm({...newCampaignForm, contactMethod: value})}
+                      className="space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="call" id="call" />
+                        <Label htmlFor="call" className="flex items-center gap-2 text-sm">
+                          <Phone size={14} />
+                          Call Only
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="text" id="text" />
+                        <Label htmlFor="text" className="flex items-center gap-2 text-sm">
+                          <MessageSquare size={14} />
+                          Text Only
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="both" id="both" />
+                        <Label htmlFor="both" className="flex items-center gap-2 text-sm">
+                          <Phone size={14} />
+                          <MessageSquare size={14} />
+                          Voice with SMS Fallback
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  {/* Patient Selection */}
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                      Select Patients
+                    </Label>
+                    <RadioGroup 
+                      value={newCampaignForm.patientGroup} 
+                      onValueChange={(value) => setNewCampaignForm({...newCampaignForm, patientGroup: value})}
+                      className="space-y-2"
+                    >
+                      {patientGroups.map((group) => (
+                        <div key={group.value} className="flex items-center space-x-2">
+                          <RadioGroupItem value={group.value} id={group.value} />
+                          <Label htmlFor={group.value} className="flex items-center justify-between flex-1 text-sm">
+                            <span>{group.label}</span>
+                            <Badge variant="outline" className="text-xs">{group.count} patients</Badge>
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
+
                   <Button 
                     className="w-full bg-[#1E4D36] hover:bg-[#1E4D36]/90 text-white py-3"
-                    onClick={createNewCampaign}
+                    onClick={generateCampaign}
+                    disabled={!newCampaignForm.name || !newCampaignForm.message}
                   >
                     Generate Campaign
                   </Button>
@@ -214,7 +308,7 @@ export const CampaignsContent: React.FC = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {stats.map((stat, index) => (
-          <Card key={index} className="bg-white">
+          <Card key={index} className="bg-white shadow-md">
             <CardContent className="p-3 sm:p-4">
               <div className="flex items-center gap-2 sm:gap-3">
                 <stat.icon size={16} className={stat.color} />
@@ -243,7 +337,7 @@ export const CampaignsContent: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           {recommendedCampaigns.map((campaign) => (
-            <Card key={campaign.id} className="bg-white">
+            <Card key={campaign.id} className="bg-white shadow-md hover:shadow-lg transition-shadow">
               <CardContent className="p-4">
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2">
@@ -302,7 +396,7 @@ export const CampaignsContent: React.FC = () => {
 
         <div className="grid grid-cols-1 gap-4">
           {activeCampaigns.map((campaign) => (
-            <Card key={campaign.id} className="bg-white">
+            <Card key={campaign.id} className="bg-white shadow-md hover:shadow-lg transition-shadow">
               <CardContent className="p-4">
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-2">
