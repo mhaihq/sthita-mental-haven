@@ -9,10 +9,11 @@ import { CareTask } from './types';
 interface CareTaskCardProps {
   task: CareTask;
   onClick: () => void;
+  onDetailClick?: (taskId: string) => void;
 }
 
-export const CareTaskCard: React.FC<CareTaskCardProps> = ({ task, onClick }) => (
-  <Card className="bg-white rounded-lg mb-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer" onClick={onClick}>
+export const CareTaskCard: React.FC<CareTaskCardProps> = ({ task, onClick, onDetailClick }) => (
+  <Card className="bg-white rounded-lg mb-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
     <CardContent className="p-4">
       <div className="flex items-center gap-2 mb-2">
         <div className={`w-3 h-3 rounded-full bg-${task.categoryColor}-300`}></div>
@@ -48,8 +49,16 @@ export const CareTaskCard: React.FC<CareTaskCardProps> = ({ task, onClick }) => 
           <Clock size={14} className="mr-1" />
           {task.minutes} min
         </div>
-        <Button variant="ghost" size="sm" className="text-blue-600">
-          Details <ArrowRight size={14} className="ml-1" />
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="text-blue-600"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDetailClick?.(task.id);
+          }}
+        >
+          View Details <ArrowRight size={14} className="ml-1" />
         </Button>
       </div>
     </CardContent>
