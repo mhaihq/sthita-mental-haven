@@ -17,8 +17,8 @@ export const TaskTimeTracker: React.FC<TaskTimeTrackerProps> = ({ taskId, onBack
   const [elapsedTime, setElapsedTime] = useState(0);
   const [totalSessionTime, setTotalSessionTime] = useState(0);
 
-  // Find the task from careTasksData
-  const allTasks = [...careTasksData.ccm, ...careTasksData.rpm];
+  // Find the task from careTasksData - flatten all tasks from all CPT codes
+  const allTasks = Object.values(careTasksData).flat();
   const task = allTasks.find(t => t.id === taskId);
 
   useEffect(() => {
