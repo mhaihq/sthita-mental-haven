@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { X, BadgeAlert } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -24,7 +25,7 @@ const calculateAge = (dateOfBirth: string) => {
 };
 
 export const HanaSidebar = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'tasks' | 'agents' | 'careLog' | 'billing'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'tasks' | 'careLog' | 'billing'>('overview');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // Calculate patient age
@@ -104,7 +105,6 @@ export const HanaSidebar = () => {
           <div className="flex-grow overflow-y-auto p-4">
             {activeTab === 'overview' && <ModifiedOverviewTab onTaskClick={handleTaskClick} />}
             {activeTab === 'tasks' && <CareTasksContent />}
-            {activeTab === 'agents' && <AgentsCareLogContents type="agents" />}
             {activeTab === 'careLog' && <AgentsCareLogContents type="careLog" />}
             {activeTab === 'billing' && <BillingContent />}
           </div>
