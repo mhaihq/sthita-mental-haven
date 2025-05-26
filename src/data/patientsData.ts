@@ -1,4 +1,3 @@
-
 export interface PatientSummary {
   id: string;
   name: string;
@@ -17,8 +16,8 @@ export const patientsData: PatientSummary[] = [
   {
     id: "P100592",
     name: "Sthita Pujari",
-    dateOfBirth: "1992-05-15",
-    gender: "Female",
+    dateOfBirth: "1997-05-15",
+    gender: "Male",
     primaryDiagnosis: "Major Depressive Disorder, Recurrent",
     diagnosisCode: "F33.2",
     severity: "Moderate",
