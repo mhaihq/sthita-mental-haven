@@ -5,16 +5,17 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { 
-  BarChart3, 
   TrendingUp, 
-  Clock, 
   Users, 
   Target,
-  AlertTriangle,
   CheckCircle2,
-  Activity
+  Activity,
+  Calendar,
+  Eye,
+  Clock
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { Button } from '@/components/ui/button';
 
 const chartConfig = {
   timeSpent: {
@@ -36,12 +37,21 @@ const chartConfig = {
 };
 
 export const InsightsContent: React.FC = () => {
+  const enrollmentTrendData = [
+    { week: 'Week 1', enrolled: 12 },
+    { week: 'Week 2', enrolled: 18 },
+    { week: 'Week 3', enrolled: 15 },
+    { week: 'Week 4', enrolled: 21 },
+    { week: 'Week 5', enrolled: 25 },
+    { week: 'Week 6', enrolled: 30 }
+  ];
+
   const timeAllocationData = [
-    { activity: 'Patient Calls', minutes: 180, percentage: 35 },
-    { activity: 'Documentation', minutes: 120, percentage: 23 },
-    { activity: 'Care Planning', minutes: 90, percentage: 17 },
-    { activity: 'Provider Coordination', minutes: 75, percentage: 15 },
-    { activity: 'Administrative', minutes: 50, percentage: 10 }
+    { activity: 'Patient Calls', minutes: 25, percentage: 35 },
+    { activity: 'Documentation', minutes: 18, percentage: 25 },
+    { activity: 'Care Planning', minutes: 14, percentage: 20 },
+    { activity: 'Provider Coordination', minutes: 11, percentage: 15 },
+    { activity: 'Administrative', minutes: 4, percentage: 5 }
   ];
 
   const efficiencyTrendData = [
@@ -57,85 +67,137 @@ export const InsightsContent: React.FC = () => {
     { name: 'Low Priority', value: 20, color: '#E6F0EE' }
   ];
 
-  const metrics = [
-    {
-      title: 'Avg Time per Patient',
-      value: '42 min',
-      change: '+5%',
-      changeType: 'increase',
-      icon: Clock,
-      color: 'text-[#1E4D36]',
-      bgColor: 'bg-[#EBF4F0]'
-    },
-    {
-      title: 'Tasks Completed',
-      value: '87%',
-      change: '+12%',
-      changeType: 'increase',
-      icon: CheckCircle2,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50'
-    },
-    {
-      title: 'Care Goals Met',
-      value: '78%',
-      change: '+8%',
-      changeType: 'increase',
-      icon: Target,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50'
-    },
-    {
-      title: 'Documentation Time',
-      value: '23%',
-      change: '-3%',
-      changeType: 'decrease',
-      icon: AlertTriangle,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50'
-    }
-  ];
-
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="text-center py-4">
-        <BarChart3 size={48} className="mx-auto text-[#1E4D36] mb-4" />
-        <h2 className="text-xl font-semibold text-[#1E4D36] mb-2">Care Coordination Insights</h2>
+      {/* Header - Left Aligned */}
+      <div className="text-left">
+        <div className="flex items-center gap-2 mb-2">
+          <TrendingUp size={24} className="text-blue-600" />
+          <h2 className="text-xl font-semibold text-gray-900">Care Coordination Velocity Tracker</h2>
+        </div>
         <p className="text-sm text-gray-600">
-          Analyze time allocation and efficiency patterns to optimize care delivery.
+          Track your patient care progress against target population
         </p>
+        <div className="flex gap-2 mt-3">
+          <Button variant="outline" size="sm" className="text-blue-600 border-blue-600">
+            <Eye className="h-4 w-4 mr-1" />
+            View Patient List
+          </Button>
+          <Button variant="outline" size="sm" className="text-blue-600 border-blue-600">
+            <Calendar className="h-4 w-4 mr-1" />
+            Change Date Range
+          </Button>
+        </div>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {metrics.map((metric, index) => {
-          const IconComponent = metric.icon;
-          return (
-            <Card key={index} className="shadow-sm hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-gray-600 mb-1">{metric.title}</p>
-                    <p className="text-lg font-bold text-gray-900">{metric.value}</p>
-                    <div className="flex items-center mt-1">
-                      <span className={`text-xs font-medium ${
-                        metric.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {metric.change}
-                      </span>
-                      <span className="text-xs text-gray-500 ml-1">vs last month</span>
-                    </div>
-                  </div>
-                  <div className={`p-2 rounded-lg ${metric.bgColor}`}>
-                    <IconComponent className={`h-4 w-4 ${metric.color}`} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+      {/* Key Metrics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card className="bg-blue-50 border-blue-200">
+          <CardContent className="p-4">
+            <div className="text-sm text-blue-700 mb-1">Patients engaged this week</div>
+            <div className="text-3xl font-bold text-blue-800 mb-1">5</div>
+            <div className="flex items-center">
+              <span className="text-xs text-green-600 font-medium">↑ 25%</span>
+            </div>
+            <div className="text-xs text-blue-600 mt-1">Total: 15 this month</div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-purple-50 border-purple-200">
+          <CardContent className="p-4">
+            <div className="text-sm text-purple-700 mb-1">Care target</div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-3xl font-bold text-purple-800">80%</span>
+              <span className="text-sm text-purple-600">complete</span>
+            </div>
+            <Progress value={80} className="h-2 mb-1" />
+            <div className="text-xs text-purple-600">4 of 5 target patients</div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-green-50 border-green-200">
+          <CardContent className="p-4">
+            <div className="text-sm text-green-700 mb-1">Engagement rate</div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-3xl font-bold text-green-800">90%</span>
+              <span className="text-sm text-green-600">response</span>
+            </div>
+            <div className="text-xs text-green-600">9 of 10 patients contacted</div>
+          </CardContent>
+        </Card>
       </div>
+
+      {/* Enrollment Trend Chart */}
+      <Card className="shadow-md">
+        <CardHeader>
+          <CardTitle className="text-lg text-[#1E4D36] flex items-center gap-2">
+            <Activity className="h-5 w-5" />
+            Patient Engagement Trend
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig} className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={enrollmentTrendData}>
+                <XAxis dataKey="week" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Line 
+                  type="monotone" 
+                  dataKey="enrolled" 
+                  stroke="#3B82F6" 
+                  strokeWidth={3}
+                  dot={{ fill: "#3B82F6", strokeWidth: 2, r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
+      {/* Weekly Summary */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="p-6">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-blue-900">Hello Dr. Martinez</h3>
+            <Badge className="bg-green-100 text-green-800 border-green-300">Great week!</Badge>
+          </div>
+          <p className="text-gray-700 mb-4">
+            This week, you supported <strong>5 patients</strong>, completed <strong>8 care goals</strong>, and logged <strong>22 minutes</strong> of thoughtful, efficient care. <span className="text-blue-600 font-medium">That's 15% more time than last week.</span>
+          </p>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="flex items-center gap-3">
+              <Users className="h-8 w-8 text-blue-600" />
+              <div>
+                <div className="text-sm text-gray-600">Patients Supported</div>
+                <div className="text-xl font-bold text-gray-900">5</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <CheckCircle2 className="h-8 w-8 text-green-600" />
+              <div>
+                <div className="text-sm text-gray-600">Goals Completed</div>
+                <div className="text-xl font-bold text-gray-900">8</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Clock className="h-8 w-8 text-orange-600" />
+              <div>
+                <div className="text-sm text-gray-600">Time Logged</div>
+                <div className="text-xl font-bold text-gray-900">22 min</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Activity className="h-8 w-8 text-purple-600" />
+              <div>
+                <div className="text-sm text-gray-600">AI Edits</div>
+                <div className="text-xl font-bold text-gray-900">3</div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -144,7 +206,7 @@ export const InsightsContent: React.FC = () => {
           <CardHeader>
             <CardTitle className="text-lg text-[#1E4D36] flex items-center gap-2">
               <Activity className="h-5 w-5" />
-              Time Allocation by Activity
+              Average Time per Activity
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -180,112 +242,52 @@ export const InsightsContent: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Efficiency Trend */}
+        {/* Task Priority Distribution */}
         <Card className="shadow-md">
           <CardHeader>
             <CardTitle className="text-lg text-[#1E4D36] flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Efficiency Trend
+              <Target className="h-5 w-5" />
+              Task Priority Distribution
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-64">
+            <ChartContainer config={chartConfig} className="h-48">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={efficiencyTrendData}>
-                  <XAxis dataKey="week" tick={{ fontSize: 10 }} />
-                  <YAxis tick={{ fontSize: 10 }} />
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={40}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Line 
-                    type="monotone" 
-                    dataKey="efficiency" 
-                    stroke="#1E4D36" 
-                    strokeWidth={3}
-                    dot={{ fill: "#1E4D36", strokeWidth: 2, r: 4 }}
-                  />
-                </LineChart>
+                </PieChart>
               </ResponsiveContainer>
             </ChartContainer>
-            <div className="mt-4">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Current Efficiency</span>
-                <span className="font-bold text-[#1E4D36] text-lg">82%</span>
-              </div>
-              <Progress value={82} className="mt-2 h-2" />
-              <p className="text-xs text-gray-500 mt-2">
-                Efficiency improved by 10% over the last month
-              </p>
+            <div className="mt-4 space-y-2">
+              {pieData.map((item, index) => (
+                <div key={index} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-3 h-3 rounded-full" 
+                      style={{ backgroundColor: item.color }}
+                    ></div>
+                    <span className="text-gray-600">{item.name}</span>
+                  </div>
+                  <span className="font-medium text-gray-900">{item.value}%</span>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
       </div>
-
-      {/* Task Priority Distribution */}
-      <Card className="shadow-md">
-        <CardHeader>
-          <CardTitle className="text-lg text-[#1E4D36] flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Task Priority Distribution
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <ChartContainer config={chartConfig} className="h-48">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={pieData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-            </div>
-            <div className="space-y-4">
-              <h4 className="font-medium text-gray-900">Recommendations</h4>
-              <div className="space-y-3">
-                <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center gap-2 mb-1">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-medium text-green-800">Strength</span>
-                  </div>
-                  <p className="text-xs text-green-700">
-                    High task completion rate shows strong care coordination
-                  </p>
-                </div>
-                <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
-                  <div className="flex items-center gap-2 mb-1">
-                    <AlertTriangle className="h-4 w-4 text-orange-600" />
-                    <span className="text-sm font-medium text-orange-800">Opportunity</span>
-                  </div>
-                  <p className="text-xs text-orange-700">
-                    Reduce documentation time by 5% to increase patient interaction
-                  </p>
-                </div>
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Target className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-medium text-blue-800">Focus</span>
-                  </div>
-                  <p className="text-xs text-blue-700">
-                    Prioritize high-risk patients to improve care outcomes
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
